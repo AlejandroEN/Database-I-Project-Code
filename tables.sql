@@ -1,126 +1,108 @@
-CREATE TABLE InformacionInstitucion
-(
+CREATE TABLE InformacionInstitucion (
     ruc            CHAR(11) PRIMARY KEY,
-    descripcion    VARCHAR(1000),
-    fundador       VARCHAR(100),
-    fundacionFecha DATE,
-    bannerUrl      VARCHAR(255),
-    nombre         VARCHAR(150)
+    descripcion    VARCHAR(1000) NOT NULL,
+    fundador       VARCHAR(100)  NOT NULL,
+    fundacionFecha DATE          NOT NULL,
+    bannerUrl      VARCHAR(255)  NOT NULL,
+    nombre         VARCHAR(150)  NOT NULL
 );
 
-
-CREATE TABLE Persona
-(
+CREATE TABLE Persona (
     dni             CHAR(8) PRIMARY KEY,
-    nombres         VARCHAR(100),
-    primerApellido  VARCHAR(50),
-    segundoApellido VARCHAR(50),
-    nacimientoFecha DATE,
-    sexo            CHAR(1),
-    email           VARCHAR(100)
+    nombres         VARCHAR(100) NOT NULL,
+    primerApellido  VARCHAR(50)  NOT NULL,
+    segundoApellido VARCHAR(50)  NOT NULL,
+    nacimientoFecha DATE         NOT NULL,
+    sexo            CHAR(1)      NOT NULL,
+    email           VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Alumno
-(
-    dni           CHAR(8) PRIMARY KEY REFERENCES Persona(dni),
-    nombreSeccion VARCHAR(50) REFERENCES Salon (nombreSeccion),
-    gradoId       INT REFERENCES Grado (id),
-    sedeId        INT REFERENCES Sede (id),
-    apoderadoDni  CHAR(8) REFERENCES Apoderado (dni)
-);
-
-CREATE TABLE Apoderado
-(
+CREATE TABLE Alumno (
     dni           CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
-    numeroCelular VARCHAR(15)
+    nombreSeccion VARCHAR(50) REFERENCES Salon (nombreSeccion) NOT NULL,
+    gradoId       INT REFERENCES Grado (id)                    NOT NULL,
+    sedeId        INT REFERENCES Sede (id)                     NOT NULL,
+    apoderadoDni  CHAR(8) REFERENCES Apoderado (dni)           NOT NULL
 );
 
-CREATE TABLE Colaborador
-(
+CREATE TABLE Apoderado (
+    dni           CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
+    numeroCelular VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE Colaborador (
     dni                   CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
-    sueldoMensual         FLOAT,
-    cci                   VARCHAR(20),
-    numeroCelular         VARCHAR(15),
-    horasSemanalesTrabajo INT
+    sueldoMensual         FLOAT       NOT NULL,
+    cci                   VARCHAR(20) NOT NULL,
+    numeroCelular         VARCHAR(15) NOT NULL,
+    horasSemanalesTrabajo INT         NOT NULL
 );
 
-CREATE TABLE Consejero
-(
+CREATE TABLE Consejero (
     dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
-    sedeId INT REFERENCES Sede (id)
+    sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
-CREATE TABLE Secretario
-(
+CREATE TABLE Secretario (
     dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
-    sedeId INT REFERENCES Sede (id)
+    sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
-CREATE TABLE Tutor
-(
+CREATE TABLE Tutor (
     dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
-    sedeId INT REFERENCES Sede (id)
+    sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
-CREATE TABLE Profesor
-(
+CREATE TABLE Profesor (
     dni CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni)
 );
 
-CREATE TABLE Grado
-(
-    id     INT PRIMARY KEY,
-    nombre VARCHAR(50)
+CREATE TABLE Grado (
+    id     SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Curso
-(
-    id     INT PRIMARY KEY,
-    nombre VARCHAR(50)
+CREATE TABLE Curso (
+    id     SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Salon
-(
+CREATE TABLE Salon (
     aforo         INT,
-    nombreSeccion VARCHAR(50),
-    gradoId       INT REFERENCES Grado (id),
-    sedeId        INT REFERENCES Sede (id),
-    tutorDni      CHAR(8) REFERENCES Tutor (dni),
+    nombreSeccion VARCHAR(50)                    NOT NULL,
+    gradoId       INT REFERENCES Grado (id)      NOT NULL,
+    sedeId        INT REFERENCES Sede (id)       NOT NULL,
+    tutorDni      CHAR(8) REFERENCES Tutor (dni) NOT NULL,
     PRIMARY KEY (nombreSeccion, sedeId)
 );
 
-
-CREATE TABLE Sede
-(
-    id                 INT PRIMARY KEY,
-    coordenadaLongitud DOUBLE PRECISION,
-    coordenadaLatitud  DOUBLE PRECISION,
-    direccion          VARCHAR(255),
-    construccionFecha  DATE,
-    directorDni        CHAR(8) REFERENCES Persona (dni)
+CREATE TABLE Sede (
+    id                 SERIAL PRIMARY KEY,
+    coordenadaLongitud DOUBLE PRECISION                 NOT NULL,
+    coordenadaLatitud  DOUBLE PRECISION                 NOT NULL,
+    direccion          VARCHAR(255)                     NOT NULL,
+    construccionFecha  DATE                             NOT NULL,
+    directorDni        CHAR(8) REFERENCES Persona (dni) NOT NULL
 );
 
-CREATE TABLE ProfesorSede
-(
+CREATE TABLE ProfesorSede (
     profesorDni CHAR(8) PRIMARY KEY REFERENCES Profesor (dni),
-    sedeId      INT REFERENCES Sede (id)
+    sedeId      INT REFERENCES Sede (id) NOT NULL
 );
 
-CREATE TABLE ProfesorCursoGrado
-(
+CREATE TABLE ProfesorCursoGrado (
     cursoId          INT REFERENCES Curso (id),
     gradoId          INT REFERENCES Grado (id),
     profesorDni      CHAR(8) REFERENCES Profesor (dni),
-    periodoAcademico DATE,
+    periodoAcademico DATE NOT NULL,
     PRIMARY KEY (cursoId, gradoId, profesorDni)
 );
 
-CREATE TABLE Matricula
-(
+CREATE TABLE Matricula (
     year          DATE,
     alumnoDni     CHAR(8) REFERENCES Alumno (dni),
     sedeId        INT REFERENCES Sede (id),
-    gradoId       INT REFERENCES Grado (id),
-    secretarioDni CHAR(8) REFERENCES Secretario (dni),
+    gradoId       INT REFERENCES Grado (id)           NOT NULL,
+    secretarioDni CHAR(8) REFERENCES Secretario (dni) NOT NULL,
     PRIMARY KEY (year, alumnoDni, sedeId)
 );
