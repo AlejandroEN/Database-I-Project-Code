@@ -4,7 +4,7 @@ CREATE TABLE InformacionInstitucion (
     fundador       VARCHAR(100)  NOT NULL,
     fundacionFecha DATE          NOT NULL,
     bannerUrl      VARCHAR(255)  NOT NULL,
-    nombre         VARCHAR(150)  NOT NULL
+    nombre         VARCHAR(150)  UNIQUE NOT NULL
 );
 
 CREATE TABLE Grado (
@@ -24,15 +24,16 @@ CREATE TABLE Persona (
     segundoApellido VARCHAR(50)  NOT NULL,
     nacimientoFecha DATE         NOT NULL,
     sexo            CHAR(1)      NOT NULL,
-    email           VARCHAR(100) NOT NULL
+    email           VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE Colaborador (
     dni                   CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
-    sueldoMensual         FLOAT       NOT NULL,
+    sueldoHora            FLOAT       NOT NULL,
     cci                   CHAR(20)    NOT NULL,
     numeroCelular         VARCHAR(15) NOT NULL,
-    horasSemanalesTrabajo INT         NOT NULL
+    horasSemanalesTrabajo INT         NOT NULL,
+    estaActivo BOOLEAN NOT NULL
 );
 
 CREATE TABLE Sede (
@@ -41,7 +42,7 @@ CREATE TABLE Sede (
     coordenadaLatitud  DOUBLE PRECISION                     NOT NULL,
     direccion          VARCHAR(255)                         NOT NULL,
     construccionFecha  DATE                                 NOT NULL,
-    directorDni        CHAR(8) REFERENCES Colaborador (dni) NOT NULL
+    directorDni        CHAR(8) REFERENCES Colaborador (dni) UNIQUE NOT NULL
 );
 
 CREATE TABLE Consejero (
@@ -68,7 +69,7 @@ CREATE TABLE Salon (
     nombreSeccion VARCHAR(50) UNIQUE             NOT NULL,
     gradoId       INT REFERENCES Grado (id)      NOT NULL,
     sedeId        INT REFERENCES Sede (id)       NOT NULL,
-    tutorDni      CHAR(8) REFERENCES Tutor (dni) NOT NULL,
+    tutorDni      CHAR(8) REFERENCES Tutor (dni) UNIQUE NOT NULL,
     PRIMARY KEY (nombreSeccion, sedeId)
 );
 
@@ -80,7 +81,6 @@ CREATE TABLE Apoderado (
 CREATE TABLE Alumno (
     dni           CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
     nombreSeccion VARCHAR(50) REFERENCES Salon (nombreSeccion) NOT NULL,
-    gradoId       INT REFERENCES Grado (id)                    NOT NULL,
     sedeId        INT REFERENCES Sede (id)                     NOT NULL,
     apoderadoDni  CHAR(8) REFERENCES Apoderado (dni)           NOT NULL
 );
