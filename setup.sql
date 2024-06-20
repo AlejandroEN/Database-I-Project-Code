@@ -67,8 +67,8 @@ VALUES ('00000001', 20, '12345678901234567890', '+1234567890', 40, TRUE),
        ('00000029', 24, '93345678901234567890', '+9234567890', 32, TRUE),
        ('00000030', 26, '14345678901234567890', '+1034567890', 35, TRUE);
 INSERT INTO Sede (id, coordenadaLongitud, coordenadaLatitud, direccion, construccionFecha, institucionRuc)
-VALUES (1, -77.042793, -12.046374, 'Direccion 1', '2000-01-01', '12345678901'),
-       (2, -77.032793, -12.036374, 'Direccion 2', '2005-05-05', '12345678902');
+VALUES (1, -77.042793, -12.046374, 'Direccion 1', '2003-01-01', '12345678901'),
+       (2, -77.032793, -12.036374, 'Direccion 2', '2004-05-05', '12345678902');
 INSERT INTO Director (dni, sedeId)
 VALUES ('00000001', 1),
        ('00000002', 2);
@@ -109,10 +109,10 @@ VALUES (30, 'Seccion 1', 1, 1),
        (45, 'Seccion 9', 3, 2),
        (50, 'Seccion 10', 4, 2);
 INSERT INTO Tutor (dni, salonNombreSeccion, sedeId)
-VALUES ('00000007', 'Seccion 1', 1),
-       ('00000008', 'Seccion 2', 1),
-       ('00000009', 'Seccion 3', 1),
-       ('00000010', 'Seccion 4', 1),
+VALUES ('00000027', 'Seccion 1', 1),
+       ('00000028', 'Seccion 2', 1),
+       ('00000029', 'Seccion 3', 1),
+       ('00000030', 'Seccion 4', 1),
        ('00000021', 'Seccion 5', 1),
        ('00000022', 'Seccion 6', 1),
        ('00000023', 'Seccion 7', 2),
@@ -145,7 +145,9 @@ INSERT INTO ProfesorSede (profesorDni, sedeId)
 VALUES ('00000007', 1),
        ('00000008', 1),
        ('00000009', 2),
-       ('00000010', 2);
+       ('00000010', 2),
+       ('00000007',2);
+
 INSERT INTO ProfesorCursoGrado (cursoId, gradoId, profesorDni, periodoAcademico)
 VALUES (1, 1, '00000007', '2023-01-01'),
        (2, 2, '00000008', '2023-01-01'),

@@ -91,8 +91,9 @@ CREATE TABLE Alumno (
 );
 
 CREATE TABLE ProfesorSede (
-    profesorDni CHAR(8) PRIMARY KEY REFERENCES Profesor (dni),
-    sedeId      INT REFERENCES Sede (id) NOT NULL
+    profesorDni CHAR(8) REFERENCES Profesor (dni),
+    sedeId      INT REFERENCES Sede (id) NOT NULL,
+    PRIMARY KEY (profesorDni, sedeId)
 );
 
 CREATE TABLE ProfesorCursoGrado (
