@@ -34,7 +34,17 @@ VALUES ('00000001', 'Nombre1', 'Apellido1', 'Apellido2', '2000-01-01', 'M', 'nom
        ('00000027', 'Nombre27', 'Apellido1', 'Apellido2', '1986-07-07', 'M', 'nombre27@example.com'),-- Tutor 11
        ('00000028', 'Nombre28', 'Apellido1', 'Apellido2', '1987-08-08', 'F', 'nombre28@example.com'),-- Tutor 12
        ('00000029', 'Nombre29', 'Apellido1', 'Apellido2', '1988-09-09', 'M', 'nombre29@example.com'),-- Tutor 13
-       ('00000030', 'Nombre30', 'Apellido1', 'Apellido2', '1989-10-10', 'F', 'nombre30@example.com');-- Tutor 14
+       ('00000030', 'Nombre30', 'Apellido1', 'Apellido2', '1989-10-10', 'F', 'nombre30@example.com'),-- Tutor 14
+       ('00000031', 'Nombre31', 'Apellido1', 'Apellido2', '1970-01-01', 'M', 'nombre31@example.com'),-- Apoderado 1
+       ('00000032', 'Nombre32', 'Apellido1', 'Apellido2', '1971-02-02', 'F', 'nombre32@example.com'),-- Apoderado 2
+       ('00000033', 'Nombre33', 'Apellido1', 'Apellido2', '1972-03-03', 'M', 'nombre33@example.com'),-- Apoderado 3
+       ('00000034', 'Nombre34', 'Apellido1', 'Apellido2', '1973-04-04', 'F', 'nombre34@example.com'),-- Apoderado 4
+       ('00000035', 'Nombre35', 'Apellido1', 'Apellido2', '1974-05-05', 'M', 'nombre35@example.com'),-- Apoderado 5
+       ('00000036', 'Nombre36', 'Apellido1', 'Apellido2', '1975-06-06', 'F', 'nombre36@example.com'),-- Apoderado 6
+       ('00000037', 'Nombre37', 'Apellido1', 'Apellido2', '1976-07-07', 'M', 'nombre37@example.com'),-- Apoderado 7
+       ('00000038', 'Nombre38', 'Apellido1', 'Apellido2', '1977-08-08', 'F', 'nombre38@example.com'),-- Apoderado 8
+       ('00000039', 'Nombre39', 'Apellido1', 'Apellido2', '1978-09-09', 'M', 'nombre39@example.com'),-- Apoderado 9
+       ('00000040', 'Nombre40', 'Apellido1', 'Apellido2', '1979-10-10', 'F', 'nombre40@example.com');-- Apoderado 10
 INSERT INTO Colaborador (dni, sueldoHora, cci, numeroCelular, horasSemanalesTrabajo, estaActivo)
 VALUES ('00000001', 20, '12345678901234567890', '+1234567890', 40, TRUE),
        ('00000002', 25, '22345678901234567890', '+2234567890', 35, TRUE),
@@ -110,27 +120,27 @@ VALUES ('00000007', 'Seccion 1', 1),
        ('00000025', 'Seccion 9', 2),
        ('00000026', 'Seccion 10', 2);
 INSERT INTO Apoderado (dni, numeroCelular)
-VALUES ('00000001', '+1234567890'),
-       ('00000002', '+2234567890'),
-       ('00000003', '+3234567890'),
-       ('00000004', '+4234567890'),
-       ('00000005', '+5234567890'),
-       ('00000006', '+6234567890'),
-       ('00000007', '+7234567890'),
-       ('00000008', '+8234567890'),
-       ('00000009', '+9234567890'),
-       ('00000010', '+1034567890');
+VALUES ('00000031', '+1234567890'),
+       ('00000032', '+2234567890'),
+       ('00000033', '+3234567890'),
+       ('00000034', '+4234567890'),
+       ('00000035', '+5234567890'),
+       ('00000036', '+6234567890'),
+       ('00000037', '+7234567890'),
+       ('00000038', '+8234567890'),
+       ('00000039', '+9234567890'),
+       ('00000040', '+1034567890');
 INSERT INTO Alumno (dni, nombreSeccion, sedeId, apoderadoDni)
-VALUES ('00000011', 'Seccion 1', 1, '00000001'),
-       ('00000012', 'Seccion 2', 1, '00000002'),
-       ('00000013', 'Seccion 3', 1, '00000003'),
-       ('00000014', 'Seccion 4', 1, '00000004'),
-       ('00000015', 'Seccion 5', 1, '00000005'),
-       ('00000016', 'Seccion 6', 1, '00000006'),
-       ('00000017', 'Seccion 7', 2, '00000007'),
-       ('00000018', 'Seccion 8', 2, '00000008'),
-       ('00000019', 'Seccion 9', 2, '00000009'),
-       ('00000020', 'Seccion 10', 2, '00000010');
+VALUES ('00000011', 'Seccion 1', 1, '00000031'),
+       ('00000012', 'Seccion 2', 1, '00000032'),
+       ('00000013', 'Seccion 3', 1, '00000033'),
+       ('00000014', 'Seccion 4', 1, '00000034'),
+       ('00000015', 'Seccion 5', 1, '00000035'),
+       ('00000016', 'Seccion 6', 1, '00000036'),
+       ('00000017', 'Seccion 7', 2, '00000037'),
+       ('00000018', 'Seccion 8', 2, '00000038'),
+       ('00000019', 'Seccion 9', 2, '00000039'),
+       ('00000020', 'Seccion 10', 2, '00000040');
 INSERT INTO ProfesorSede (profesorDni, sedeId)
 VALUES ('00000007', 1),
        ('00000008', 1),

@@ -197,29 +197,6 @@ EXECUTE FUNCTION check_max_salones_per_grado();
 
 ----
 
---- rehacer
-CREATE OR REPLACE FUNCTION check_aforo_salon()
-    RETURNS TRIGGER AS
-$$
-DECLARE
-    aforo INT;
-BEGIN
-    SELECT aforo FROM Salon WHERE nombreSeccion = NEW.nombreSeccion AND sedeId = NEW.sedeId;
-
-    IF (50 >= aforo) THEN
-        RAISE EXCEPTION 'El aforo del salón ha sido superado.';
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER check_aforo_trigger
-    BEFORE INSERT
-    ON Alumno
-    FOR EACH ROW
-EXECUTE FUNCTION check_aforo_salon();
-
 ----
 
 CREATE OR REPLACE FUNCTION enforce_single_active_tutor()

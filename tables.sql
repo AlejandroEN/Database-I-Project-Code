@@ -65,7 +65,7 @@ CREATE TABLE Curso (
 );
 
 CREATE TABLE Salon (
-    aforo         INT,
+    aforo         INT NOT NULL,
     nombreSeccion VARCHAR(50) UNIQUE             NOT NULL,
     gradoId       INT REFERENCES Grado (id)      NOT NULL,
     sedeId        INT REFERENCES Sede (id)       NOT NULL,
