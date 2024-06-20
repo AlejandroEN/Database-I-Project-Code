@@ -16,7 +16,27 @@ EXECUTE FUNCTION validar_year_matricula();
 
 ----
 
+CREATE OR REPLACE FUNCTION check_sueldo_mensual()
+    RETURNS TRIGGER AS
+$$
+DECLARE
+    sueldo_mensual INT;
+BEGIN
+    sueldo_mensual = NEW.sueldoHora * NEW.horasSemanalesTrabajo * 4;
 
+    IF sueldo_mensual < 1025 THEN
+        RAISE EXCEPTION 'El sueldo mensual debe ser % mayor al sueldo mínimo de 1025.', sueldo_mensual;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_sueldo_mensual_trigger
+    BEFORE INSERT OR UPDATE
+    ON Colaborador
+    FOR EACH ROW
+EXECUTE FUNCTION check_sueldo_mensual();
 
 ----
 

@@ -24,7 +24,17 @@ VALUES ('00000001', 'Nombre1', 'Apellido1', 'Apellido2', '2000-01-01', 'M', 'nom
        ('00000017', 'Nombre17', 'Apellido1', 'Apellido2', '2005-01-07', 'M', 'nombre17@example.com'),-- Alumno 7
        ('00000018', 'Nombre18', 'Apellido1', 'Apellido2', '2005-01-08', 'F', 'nombre18@example.com'),-- Alumno 8
        ('00000019', 'Nombre19', 'Apellido1', 'Apellido2', '2005-01-09', 'M', 'nombre19@example.com'),-- Alumno 9
-       ('00000020', 'Nombre20', 'Apellido1', 'Apellido2', '2005-01-10', 'F', 'nombre20@example.com');-- Alumno 10
+       ('00000020', 'Nombre20', 'Apellido1', 'Apellido2', '2005-01-10', 'F', 'nombre20@example.com'),-- Alumno 10
+       ('00000021', 'Nombre21', 'Apellido1', 'Apellido2', '1980-01-01', 'M', 'nombre21@example.com'),-- Tutor 5
+       ('00000022', 'Nombre22', 'Apellido1', 'Apellido2', '1981-02-02', 'F', 'nombre22@example.com'),-- Tutor 6
+       ('00000023', 'Nombre23', 'Apellido1', 'Apellido2', '1982-03-03', 'M', 'nombre23@example.com'),-- Tutor 7
+       ('00000024', 'Nombre24', 'Apellido1', 'Apellido2', '1983-04-04', 'F', 'nombre24@example.com'),-- Tutor 8
+       ('00000025', 'Nombre25', 'Apellido1', 'Apellido2', '1984-05-05', 'M', 'nombre25@example.com'),-- Tutor 9
+       ('00000026', 'Nombre26', 'Apellido1', 'Apellido2', '1985-06-06', 'F', 'nombre26@example.com'),-- Tutor 10
+       ('00000027', 'Nombre27', 'Apellido1', 'Apellido2', '1986-07-07', 'M', 'nombre27@example.com'),-- Tutor 11
+       ('00000028', 'Nombre28', 'Apellido1', 'Apellido2', '1987-08-08', 'F', 'nombre28@example.com'),-- Tutor 12
+       ('00000029', 'Nombre29', 'Apellido1', 'Apellido2', '1988-09-09', 'M', 'nombre29@example.com'),-- Tutor 13
+       ('00000030', 'Nombre30', 'Apellido1', 'Apellido2', '1989-10-10', 'F', 'nombre30@example.com');-- Tutor 14
 INSERT INTO Colaborador (dni, sueldoHora, cci, numeroCelular, horasSemanalesTrabajo, estaActivo)
 VALUES ('00000001', 20, '12345678901234567890', '+1234567890', 40, TRUE),
        ('00000002', 25, '22345678901234567890', '+2234567890', 35, TRUE),
@@ -35,7 +45,17 @@ VALUES ('00000001', 20, '12345678901234567890', '+1234567890', 40, TRUE),
        ('00000007', 28, '72345678901234567890', '+7234567890', 38, TRUE),
        ('00000008', 18, '82345678901234567890', '+8234567890', 40, TRUE),
        ('00000009', 24, '92345678901234567890', '+9234567890', 32, TRUE),
-       ('00000010', 26, '10345678901234567890', '+1034567890', 35, TRUE);
+       ('00000010', 26, '10345678901234567890', '+1034567890', 35, TRUE),
+       ('00000021', 20, '13345678901234567890', '+1234567890', 40, TRUE),
+       ('00000022', 25, '23345678901234567890', '+2234567890', 35, TRUE),
+       ('00000023', 30, '33345678901234567890', '+3234567890', 30, TRUE),
+       ('00000024', 15, '43345678901234567890', '+4234567890', 25, TRUE),
+       ('00000025', 20, '53345678901234567890', '+5234567890', 40, TRUE),
+       ('00000026', 22, '63345678901234567890', '+6234567890', 20, TRUE),
+       ('00000027', 28, '73345678901234567890', '+7234567890', 38, TRUE),
+       ('00000028', 18, '83345678901234567890', '+8234567890', 40, TRUE),
+       ('00000029', 24, '93345678901234567890', '+9234567890', 32, TRUE),
+       ('00000030', 26, '14345678901234567890', '+1034567890', 35, TRUE);
 INSERT INTO Sede (id, coordenadaLongitud, coordenadaLatitud, direccion, construccionFecha, institucionRuc)
 VALUES (1, -77.042793, -12.046374, 'Direccion 1', '2000-01-01', '12345678901'),
        (2, -77.032793, -12.036374, 'Direccion 2', '2005-05-05', '12345678902');
@@ -83,10 +103,12 @@ VALUES ('00000007', 'Seccion 1', 1),
        ('00000008', 'Seccion 2', 1),
        ('00000009', 'Seccion 3', 1),
        ('00000010', 'Seccion 4', 1),
-       ('00000007', 'Seccion 5', 2),
-       ('00000008', 'Seccion 6', 2),
-       ('00000009', 'Seccion 7', 2),
-       ('00000010', 'Seccion 8', 2);
+       ('00000021', 'Seccion 5', 1),
+       ('00000022', 'Seccion 6', 1),
+       ('00000023', 'Seccion 7', 2),
+       ('00000024', 'Seccion 8', 2),
+       ('00000025', 'Seccion 9', 2),
+       ('00000026', 'Seccion 10', 2);
 INSERT INTO Apoderado (dni, numeroCelular)
 VALUES ('00000001', '+1234567890'),
        ('00000002', '+2234567890'),
