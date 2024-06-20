@@ -38,7 +38,7 @@ ALTER TABLE Apoderado
 
 ALTER TABLE Colaborador
     ADD CONSTRAINT CHK_ColaboradorSueldoMensual
-        CHECK (sueldoHora < 0);
+        CHECK (sueldoHora > 0);
 
 ALTER TABLE Colaborador
     ADD CONSTRAINT CHK_ColaboradorCCI
