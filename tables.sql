@@ -1,20 +1,10 @@
-CREATE TABLE InformacionInstitucion (
+CREATE TABLE Institucion (
     ruc            CHAR(11) PRIMARY KEY,
     descripcion    VARCHAR(1000) NOT NULL,
     fundador       VARCHAR(100)  NOT NULL,
     fundacionFecha DATE          NOT NULL,
     bannerUrl      VARCHAR(255)  NOT NULL,
     nombre         VARCHAR(150)  UNIQUE NOT NULL
-);
-
-CREATE TABLE Grado (
-    id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Curso (
-    id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Persona (
@@ -29,7 +19,7 @@ CREATE TABLE Persona (
 
 CREATE TABLE Colaborador (
     dni                   CHAR(8) PRIMARY KEY REFERENCES Persona (dni),
-    sueldoHora            FLOAT       NOT NULL,
+    sueldoHora            INT      NOT NULL,
     cci                   CHAR(20)    NOT NULL,
     numeroCelular         VARCHAR(15) NOT NULL,
     horasSemanalesTrabajo INT         NOT NULL,
@@ -42,7 +32,12 @@ CREATE TABLE Sede (
     coordenadaLatitud  DOUBLE PRECISION                     NOT NULL,
     direccion          VARCHAR(255)                         NOT NULL,
     construccionFecha  DATE                                 NOT NULL,
-    directorDni        CHAR(8) REFERENCES Colaborador (dni) UNIQUE NOT NULL
+    institucionRuc     CHAR(11) REFERENCES Institucion (ruc) NOT NULL
+);
+
+CREATE TABLE Director (
+    dni CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
+    sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
 CREATE TABLE Consejero (
@@ -55,13 +50,18 @@ CREATE TABLE Secretario (
     sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
-CREATE TABLE Tutor (
-    dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
-    sedeId INT REFERENCES Sede (id) NOT NULL
-);
-
 CREATE TABLE Profesor (
     dni CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni)
+);
+
+CREATE TABLE Grado (
+    id     SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Curso (
+    id     SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Salon (
@@ -69,8 +69,13 @@ CREATE TABLE Salon (
     nombreSeccion VARCHAR(50) UNIQUE             NOT NULL,
     gradoId       INT REFERENCES Grado (id)      NOT NULL,
     sedeId        INT REFERENCES Sede (id)       NOT NULL,
-    tutorDni      CHAR(8) REFERENCES Tutor (dni) UNIQUE NOT NULL,
     PRIMARY KEY (nombreSeccion, sedeId)
+);
+
+CREATE TABLE Tutor (
+     dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
+     salonNombreSeccion VARCHAR(50) REFERENCES Salon (nombreSeccion) NOT NULL,
+     sedeId INT REFERENCES Sede (id) NOT NULL
 );
 
 CREATE TABLE Apoderado (

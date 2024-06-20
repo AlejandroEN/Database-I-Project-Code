@@ -16,39 +16,16 @@ EXECUTE FUNCTION validar_year_matricula();
 
 ----
 
-CREATE OR REPLACE FUNCTION check_aforo_salon()
-    RETURNS TRIGGER AS $$
-DECLARE
-    aforo INT;
-    cantidad_alumnos INT;
-BEGIN
-    SELECT aforo INTO aforo FROM Salon WHERE nombreSeccion = NEW.nombreSeccion AND sedeId = NEW.sedeId;
-    SELECT COUNT(*) INTO cantidad_alumnos FROM Alumno WHERE nombreSeccion = NEW.nombreSeccion AND sedeId = NEW.sedeId;
-
-    IF (cantidad_alumnos >= aforo) THEN
-        RAISE EXCEPTION 'El aforo del salón ha sido superado.';
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER check_aforo_trigger
-    BEFORE INSERT ON Alumno
-    FOR EACH ROW
-EXECUTE FUNCTION check_aforo_salon();
-
-----
-
 CREATE OR REPLACE FUNCTION check_sueldo_mensual()
-    RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS
+$$
 DECLARE
-    sueldo_mensual FLOAT;
+    sueldo_mensual INT;
 BEGIN
     sueldo_mensual = NEW.sueldoHora * NEW.horasSemanalesTrabajo * 4;
 
     IF sueldo_mensual < 1025 THEN
-        RAISE EXCEPTION 'El sueldo mensual debe ser mayor al sueldo mínimo de 1025.';
+        RAISE EXCEPTION 'El sueldo mensual debe ser % mayor al sueldo mínimo de 1025.', sueldo_mensual;
     END IF;
 
     RETURN NEW;
@@ -56,14 +33,16 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER check_sueldo_mensual_trigger
-    BEFORE INSERT OR UPDATE ON Colaborador
+    BEFORE INSERT OR UPDATE
+    ON Colaborador
     FOR EACH ROW
 EXECUTE FUNCTION check_sueldo_mensual();
 
 ----
 
 CREATE OR REPLACE FUNCTION check_colaborador_roles()
-    RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS
+$$
 DECLARE
     existe BOOLEAN;
 BEGIN
@@ -87,30 +66,38 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER check_consejero_roles_trigger
-    BEFORE INSERT ON Consejero
+    BEFORE INSERT
+    ON Consejero
     FOR EACH ROW
 EXECUTE FUNCTION check_colaborador_roles();
 
 CREATE TRIGGER check_secretario_roles_trigger
-    BEFORE INSERT ON Secretario
+    BEFORE INSERT
+    ON Secretario
     FOR EACH ROW
 EXECUTE FUNCTION check_colaborador_roles();
 
 CREATE TRIGGER check_tutor_roles_trigger
-    BEFORE INSERT ON Tutor
+    BEFORE INSERT
+    ON Tutor
     FOR EACH ROW
 EXECUTE FUNCTION check_colaborador_roles();
 
 ----
 
 CREATE OR REPLACE FUNCTION check_profesor_asignacion()
-    RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS
+$$
 DECLARE
     asignado BOOLEAN;
 BEGIN
-    SELECT TRUE INTO asignado
+    SELECT TRUE
+    INTO asignado
     FROM ProfesorCursoGrado
-    WHERE cursoId = NEW.cursoId AND gradoId = NEW.gradoId AND periodoAcademico = NEW.periodoAcademico AND profesorDni = NEW.profesorDni;
+    WHERE cursoId = NEW.cursoId
+      AND gradoId = NEW.gradoId
+      AND periodoAcademico = NEW.periodoAcademico
+      AND profesorDni = NEW.profesorDni;
 
     IF asignado THEN
         RAISE EXCEPTION 'El profesor ya está asignado a este curso para este grado y periodo académico.';
@@ -121,32 +108,153 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER check_profesor_asignacion_trigger
-    BEFORE INSERT ON ProfesorCursoGrado
+    BEFORE INSERT
+    ON ProfesorCursoGrado
     FOR EACH ROW
 EXECUTE FUNCTION check_profesor_asignacion();
 
 ----
 
-CREATE OR REPLACE FUNCTION check_max_secciones()
-    RETURNS TRIGGER AS $$
-DECLARE
-    num_secciones INT;
+CREATE OR REPLACE FUNCTION check_construction_date()
+    RETURNS TRIGGER AS
+$$
 BEGIN
-    SELECT COUNT(*) INTO num_secciones
-    FROM Salon
-    WHERE sedeId = NEW.sedeId AND gradoId = NEW.gradoId;
+    IF NEW.construccionFecha < (SELECT fundacionFecha FROM Institucion WHERE ruc = NEW.institucionRuc) THEN
+        RAISE EXCEPTION 'La fecha de construcción no puede ser anterior a la fecha de fundación de la institución.';
+    END IF;
 
-    IF num_secciones >= 5 THEN
-        RAISE EXCEPTION 'El número de secciones para este grado en esta sede ha alcanzado el límite permitido.';
+    IF NEW.construccionFecha > CURRENT_DATE THEN
+        RAISE EXCEPTION 'La fecha de construcción no puede ser mayor que la fecha actual.';
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER check_max_secciones_trigger
-    BEFORE INSERT ON Salon
+CREATE TRIGGER check_construction_date_trigger
+    BEFORE INSERT OR UPDATE
+    ON Sede
     FOR EACH ROW
-EXECUTE FUNCTION check_max_secciones();
+EXECUTE FUNCTION check_construction_date();
 
 ----
+
+CREATE OR REPLACE FUNCTION enforce_single_active_director()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (SELECT COUNT(*)
+        FROM Director d
+                 JOIN Colaborador c ON d.dni = c.dni
+        WHERE d.sedeId = NEW.sedeId
+          AND c.estaActivo) > 0 THEN
+        RAISE EXCEPTION 'Ya existe un director activo para esta sede.';
+    END IF;
+
+    IF (SELECT COUNT(*)
+        FROM Director d
+        WHERE d.dni = NEW.dni
+          AND d.sedeId <> NEW.sedeId) > 0 THEN
+        UPDATE Colaborador
+        SET estaActivo = FALSE
+        WHERE dni = NEW.dni
+          AND estaActivo = TRUE;
+    END IF;
+
+    UPDATE Colaborador
+    SET estaActivo = TRUE
+    WHERE dni = NEW.dni;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_single_active_director_trigger
+    BEFORE INSERT OR UPDATE
+    ON Director
+    FOR EACH ROW
+EXECUTE FUNCTION enforce_single_active_director();
+
+----
+
+CREATE OR REPLACE FUNCTION check_max_salones_per_grado()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (SELECT COUNT(*) FROM Salon WHERE gradoId = NEW.gradoId) >= 15 THEN
+        RAISE EXCEPTION 'El grado ya tiene el máximo de 15 salones.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_max_salones_per_grado_trigger
+    BEFORE INSERT
+    ON Salon
+    FOR EACH ROW
+EXECUTE FUNCTION check_max_salones_per_grado();
+
+----
+
+--- rehacer
+CREATE OR REPLACE FUNCTION check_aforo_salon()
+    RETURNS TRIGGER AS
+$$
+DECLARE
+    aforo INT;
+BEGIN
+    SELECT aforo FROM Salon WHERE nombreSeccion = NEW.nombreSeccion AND sedeId = NEW.sedeId;
+
+    IF (50 >= aforo) THEN
+        RAISE EXCEPTION 'El aforo del salón ha sido superado.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_aforo_trigger
+    BEFORE INSERT
+    ON Alumno
+    FOR EACH ROW
+EXECUTE FUNCTION check_aforo_salon();
+
+----
+
+CREATE OR REPLACE FUNCTION enforce_single_active_tutor()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (SELECT COUNT(*)
+        FROM Tutor t
+                 JOIN Colaborador c ON t.dni = c.dni
+        WHERE t.salonNombreSeccion = NEW.salonNombreSeccion
+          AND t.sedeId = NEW.sedeId
+          AND c.estaActivo) > 0 THEN
+        RAISE EXCEPTION 'Ya existe un tutor activo para este salón en esta sede.';
+    END IF;
+
+    IF (SELECT COUNT(*)
+        FROM Tutor t
+        WHERE t.dni = NEW.dni
+          AND (t.salonNombreSeccion <> NEW.salonNombreSeccion OR t.sedeId <> NEW.sedeId)) > 0 THEN
+        UPDATE Colaborador
+        SET estaActivo = FALSE
+        WHERE dni = NEW.dni
+          AND estaActivo = TRUE;
+    END IF;
+
+    UPDATE Colaborador
+    SET estaActivo = TRUE
+    WHERE dni = NEW.dni;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_single_active_tutor_trigger
+    BEFORE INSERT OR UPDATE
+    ON Tutor
+    FOR EACH ROW
+EXECUTE FUNCTION enforce_single_active_tutor();

@@ -1,12 +1,12 @@
-ALTER TABLE InformacionInstitucion
+ALTER TABLE Institucion
     ADD CONSTRAINT CHK_InformacionInstitucionRuc
         CHECK (ruc NOT LIKE '%[^0-9]%');
 
-ALTER TABLE InformacionInstitucion
+ALTER TABLE Institucion
     ADD CONSTRAINT CHK_InformacionInstitucionBannerUrl
         CHECK (bannerUrl LIKE 'http://%' OR bannerUrl LIKE 'https://%');
 
-ALTER TABLE InformacionInstitucion
+ALTER TABLE Institucion
     ADD CONSTRAINT CHK_InformacionInstitucionFundacionFecha
         CHECK (fundacionfecha <= CURRENT_DATE);
 
@@ -56,10 +56,15 @@ ALTER TABLE Colaborador
 
 ALTER TABLE Salon
     ADD CONSTRAINT CHK_SalonAforo
-        CHECK (aforo > 0);
+        CHECK (aforo >= 30 AND aforo <= 50);
 
 ----
 
+ALTER TABLE Grado
+    ADD CONSTRAINT nombre_grado_check
+        CHECK (nombre ~* '^Grado ([1-9]|10|11)$');
+
+----
 ALTER TABLE Sede
     ADD CONSTRAINT CHK_SedeCoordenadaLongitud
         CHECK (coordenadaLongitud BETWEEN -180 AND 180);
