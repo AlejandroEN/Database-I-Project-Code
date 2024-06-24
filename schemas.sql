@@ -1,11 +1,4 @@
 CREATE SCHEMA milDatos;
-GO
-
 CREATE SCHEMA diezMilDatos;
-GO
-
 CREATE SCHEMA cienMilDatos;
-GO
-
 CREATE SCHEMA millonDatos;
-GO
