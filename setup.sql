@@ -67,7 +67,7 @@ VALUES ('00000001', 20, '12345678901234567890', '+1234567890', 40, TRUE),
        ('00000029', 24, '93345678901234567890', '+9234567890', 32, TRUE),
        ('00000030', 26, '14345678901234567890', '+1034567890', 35, TRUE);
 INSERT INTO Sede (id, coordenadaLongitud, coordenadaLatitud, direccion, construccionFecha, institucionRuc)
-VALUES (1, -77.042793, -12.046374, 'Direccion 1', '2003-01-01', '12345678901'),
+VALUES (1, -77.042793, -12.046374, 'Direccion 1', '2014-01-01', '12345678901'),
        (2, -77.032793, -12.036374, 'Direccion 2', '2004-05-05', '12345678902');
 INSERT INTO Director (dni, sedeId)
 VALUES ('00000001', 1),

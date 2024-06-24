@@ -37,7 +37,7 @@ CREATE TABLE Sede (
 
 CREATE TABLE Director (
     dni CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
-    sedeId INT REFERENCES Sede (id) NOT NULL
+    sedeId INT REFERENCES Sede (id) UNIQUE NOT NULL
 );
 
 CREATE TABLE Consejero (
@@ -75,7 +75,8 @@ CREATE TABLE Salon (
 CREATE TABLE Tutor (
      dni    CHAR(8) PRIMARY KEY REFERENCES Colaborador (dni),
      salonNombreSeccion VARCHAR(50) REFERENCES Salon (nombreSeccion) NOT NULL,
-     sedeId INT REFERENCES Sede (id) NOT NULL
+     sedeId INT REFERENCES Sede (id) NOT NULL,
+     UNIQUE (salonNombreSeccion, sedeId)
 );
 
 CREATE TABLE Apoderado (

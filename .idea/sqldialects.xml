@@ -3,6 +3,7 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/constraints.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/queries/query_1.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/queries/query_2.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/schemas.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/setup.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/tables.sql" dialect="PostgreSQL" />
