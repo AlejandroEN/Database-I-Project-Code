@@ -10,7 +10,7 @@ def generate_tutor_data(
     salon_keys: tuple[tuple[str, int], ...],
 ):
     tutor_keys: list[str] = []
-    file, writer = setup_csv_writer(f"tutor_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"tutor_{schema_size}")
 
     writer.writerow(["dni", "salonNombreSeccion", "sedeId"])
 

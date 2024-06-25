@@ -8,7 +8,7 @@ def generate_apoderado_data(
     schema_size: int, rows_amount: int, persona_keys_iterator: Iterator[str]
 ):
     apoderado_keys: list[str] = []
-    file, writer = setup_csv_writer(f"apoderado_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"apoderado_{schema_size}")
 
     writer.writerow(["dni", "numeroCelular"])
 

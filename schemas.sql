@@ -1,4 +1,4 @@
 CREATE SCHEMA mil_datos;
-CREATE SCHEMA diez_mil_datos;
-CREATE SCHEMA cien_mil_datos;
+CREATE SCHEMA diezmil_datos;
+CREATE SCHEMA cienmil_datos;
 CREATE SCHEMA millon_datos;

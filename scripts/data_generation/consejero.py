@@ -10,9 +10,9 @@ def generate_consejero_data(
     colaborador_keys_iterator: Iterator[str],
     sede_keys: tuple[int, ...],
 ):
-    file, writer = setup_csv_writer(f"consejero_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"consejero_{schema_size}")
 
-    writer.writerow(["dni", "sedeId"])
+    writer.writerow(["dni", "sede_id"])
 
     for _ in range(rows_amount):
         dni = next(colaborador_keys_iterator)

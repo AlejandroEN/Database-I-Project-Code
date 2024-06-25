@@ -11,9 +11,9 @@ def generate_secretario_data(
     sede_keys: tuple[int, ...],
 ):
     secretario_keys: list[str] = []
-    file, writer = setup_csv_writer(f"secretario_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"secretario_{schema_size}")
 
-    writer.writerow(["dni", "sedeId"])
+    writer.writerow(["dni", "sede_id"])
 
     for _ in range(rows_amount):
         dni = next(colaborador_keys_iterator)

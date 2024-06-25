@@ -10,7 +10,7 @@ def generate_profesor_sede_data(
     sede_keys: tuple[int, ...],
 ):
     profesor_sede_keys: list[tuple[str, int]] = []
-    file, writer = setup_csv_writer(f"profesor_sede_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"profesor_sede_{schema_size}")
 
     writer.writerow(["profesorDni", "sedeId"])
 
