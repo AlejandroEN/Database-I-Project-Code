@@ -1,14 +1,14 @@
-version: "3"
 services:
   db:
     image: postgres:latest
-    container_name: database-1-proyecto
+    container_name: database-1-proyecto-dev
+    restart: always
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: database
     volumes:
-      - ./init.sh:/docker-entrypoint-initdb.d
-      - ./*.sql:/docker-entrypoint-initdb.d
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./schemas.sql:/sql-files/schemas.sql
+      - ./tables.sql:/sql-files/tables.sql
     ports:
-      - "5433:5433"
+      - "5433:5432"
