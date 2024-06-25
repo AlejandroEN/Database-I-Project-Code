@@ -12,7 +12,7 @@ def generate_matricula_data(
     grado_keys: tuple[int, ...],
     secretario_keys: tuple[str, ...],
 ):
-    file, writer = setup_csv_writer(f"matricula_{schema_size}")
+    file, writer = setup_csv_writer(f"matricula_data_{schema_size}")
 
     writer.writerow(["year", "alumnoDni", "sedeId", "gradoId", "secretarioDni"])
 

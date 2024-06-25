@@ -21,6 +21,6 @@ for index in "${!schemas_names[@]}"; do
 
 	for table in $tables; do
 		filename="${table}_data_${size}.csv"
-		psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "COPY $schema.$table FROM '/csv-files/$filename.csv' DELIMITER ',' CSV HEADER;"
+		psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "\COPY $schema.$table FROM '/csv-files/$filename' DELIMITER ',' CSV HEADER;"
 	done
 done

@@ -9,7 +9,7 @@ def generate_director_data(
     colaborator_keys_iterator: Iterator[str],
     sede_keys: tuple[int, ...],
 ):
-    file, writer = setup_csv_writer(f"director_{schema_size}")
+    file, writer = setup_csv_writer(f"director_data_{schema_size}")
 
     writer.writerow(["dni", "sede_id"])
 

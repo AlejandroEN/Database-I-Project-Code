@@ -7,7 +7,7 @@ CREATE TABLE institucion
     banner_url      VARCHAR(255)        NOT NULL,
     nombre          VARCHAR(150) UNIQUE NOT NULL,
     CHECK (ruc NOT LIKE '%[^0-9]%'),
-    CHECK (banner_url LIKE 'http://%' OR banner_url LIKE 'https://%'),
+    CHECK (banner_url LIKE 'https://%'),
     CHECK (fundacion_fecha <= CURRENT_DATE)
 );
 

@@ -7,7 +7,7 @@ def generate_profesor_data(
     schema_size: int, rows_amount: int, colaborador_keys_iterator: Iterator[str]
 ):
     profesor_keys: list[str] = []
-    file, writer = setup_csv_writer(f"profesor_{schema_size}")
+    file, writer = setup_csv_writer(f"profesor_data_{schema_size}")
 
     writer.writerow(["dni"])
 

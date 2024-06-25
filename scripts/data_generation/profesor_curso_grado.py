@@ -11,7 +11,7 @@ def generate_profesor_curso_grado_data(
     grado_keys: tuple[int, ...],
     profesor_keys: tuple[str, ...],
 ):
-    file, writer = setup_csv_writer(f"profesor_curso_grado_{schema_size}")
+    file, writer = setup_csv_writer(f"profesor_curso_grado_data_{schema_size}")
 
     writer.writerow(["cursoId", "gradoId", "profesorDni", "periodoAcademico"])
 

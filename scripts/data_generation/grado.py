@@ -1,10 +1,9 @@
-from ctypes import sizeof
 from ..utils.csv_writer import setup_csv_writer
 
 
 def generate_grado_data(schema_size: int):
     grado_keys: list[int] = []
-    file, writer = setup_csv_writer(f"grado_{schema_size}")
+    file, writer = setup_csv_writer(f"grado_data_{schema_size}")
 
     writer.writerow(["id", "nombre"])
 

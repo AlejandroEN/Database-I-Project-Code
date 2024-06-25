@@ -8,7 +8,7 @@ def generate_colaborador_data(
         schema_size: int, rows_amount: int, persona_keys_iterator: Iterator[str]
 ):
     colaborador_keys: list[str] = []
-    file, writer = setup_csv_writer(f"colaborador_{schema_size}")
+    file, writer = setup_csv_writer(f"colaborador_data_{schema_size}")
 
     writer.writerow(
         [

@@ -3,7 +3,7 @@ from ..utils.csv_writer import setup_csv_writer
 
 def generate_curso_data(schema_size: int):
     curso_keys: list[int] = []
-    file, writer = setup_csv_writer(f"curso_{schema_size}")
+    file, writer = setup_csv_writer(f"curso_data_{schema_size}")
 
     writer.writerow(["id", "nombre"])
 

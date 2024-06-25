@@ -11,7 +11,7 @@ def generate_salon_data(
     sede_keys: tuple[int, ...],
 ):
     salon_keys: list[tuple[str, int]] = []
-    file, writer = setup_csv_writer(f"salon_{schema_size}")
+    file, writer = setup_csv_writer(f"salon_data_{schema_size}")
 
     writer.writerow(["aforo", "nombreSeccion", "gradoId", "sedeId"])
 

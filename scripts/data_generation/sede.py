@@ -8,7 +8,7 @@ def generate_sede_data(
     schema_size: int, rows_amount: int, institucion_keys: tuple[str, ...]
 ):
     sede_keys: list[int] = []
-    file, writer = setup_csv_writer(f"sede_{schema_size}")
+    file, writer = setup_csv_writer(f"sede_data_{schema_size}")
 
     writer.writerow(
         [

@@ -12,7 +12,7 @@ def generate_alumno_data(
     apoderado_keys: tuple[str, ...],
 ):
     alumno_keys: list[str] = []
-    file, writer = setup_csv_writer(f"alumno_{schema_size}")
+    file, writer = setup_csv_writer(f"alumno_data_{schema_size}")
 
     writer.writerow(["dni", "nombreSeccion", "sedeId", "apoderadoDni"])
 
