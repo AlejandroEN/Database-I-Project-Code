@@ -5,16 +5,16 @@ from ..utils.shared_faker import faker
 
 
 def generate_matricula_data(
-    schema_size: int,
-    rows_amount: int,
-    alumno_keys: tuple[str, ...],
-    sede_keys: tuple[int, ...],
-    grado_keys: tuple[int, ...],
-    secretario_keys: tuple[str, ...],
+        schema_size: int,
+        rows_amount: int,
+        alumno_keys: tuple[str, ...],
+        sede_keys: tuple[int, ...],
+        grado_keys: tuple[int, ...],
+        secretario_keys: tuple[str, ...],
 ):
     file, writer = setup_csv_writer(f"matricula_data_{schema_size}")
 
-    writer.writerow(["year", "alumnoDni", "sedeId", "gradoId", "secretarioDni"])
+    writer.writerow(["year", "alumno_dni", "sede_id", "grado_id", "secretario_dni"])
 
     for _ in range(rows_amount):
         year = faker.year()

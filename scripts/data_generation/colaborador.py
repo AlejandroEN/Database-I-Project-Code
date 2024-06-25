@@ -25,7 +25,7 @@ def generate_colaborador_data(
         dni = next(persona_keys_iterator)
         sueldo_hora = faker.pyfloat(left_digits=2, right_digits=1, positive=True)
         cci = faker.numerify("####################")
-        numero_celular = faker.phone_number()  # TODO: Check this constraint
+        numero_celular = faker.numerify("$%#######")
         horas_semanales_trabajo = faker.random_int(1, 168)
         esta_activo = faker.boolean()
 

@@ -5,15 +5,15 @@ from ..utils.shared_faker import faker
 
 
 def generate_salon_data(
-    schema_size: int,
-    rows_amount: int,
-    grado_keys: tuple[int, ...],
-    sede_keys: tuple[int, ...],
+        schema_size: int,
+        rows_amount: int,
+        grado_keys: tuple[int, ...],
+        sede_keys: tuple[int, ...],
 ):
     salon_keys: list[tuple[str, int]] = []
     file, writer = setup_csv_writer(f"salon_data_{schema_size}")
 
-    writer.writerow(["aforo", "nombreSeccion", "gradoId", "sedeId"])
+    writer.writerow(["aforo", "nombre_seccion", "grado_id", "sede_id"])
 
     for _ in range(rows_amount):
         aforo = faker.random_int(30, 50)
