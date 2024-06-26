@@ -1,4 +1,3 @@
 # User defined
 .env/
 *.pyc
-*.csv

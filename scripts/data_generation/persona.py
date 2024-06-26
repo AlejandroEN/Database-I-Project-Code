@@ -6,28 +6,28 @@ from ..utils.shared_faker import faker
 
 def generate_persona_data(schema_size: int, rows_amount: int):
     persona_keys: list[str] = []
-    file, writer = setup_csv_writer(f"persona_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"persona_data_{schema_size}")
 
     writer.writerow(
         [
             "dni",
             "nombres",
-            "primerApellido",
-            "segundoApellido",
-            "nacimientoFecha",
+            "primer_apellido",
+            "segundo_apelido",
+            "nacimiento_fecha",
             "sexo",
             "email",
         ]
     )
 
     for _ in range(rows_amount):
-        dni = faker.numerify(text="%#######")
+        dni = faker.unique.numerify(text="%#######")
         nombres = faker.name()
         primer_apellido = faker.last_name()
         segundo_apellido = faker.last_name()
-        nacimiento_fecha = faker.date_of_birth()
+        nacimiento_fecha = faker.date_of_birth(maximum_age=70, minimum_age=5)
         sexo = random.choice(["M", "F"])
-        email = faker.email()
+        email = faker.unique.email()
 
         persona_keys.append(dni)
 

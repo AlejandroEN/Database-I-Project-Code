@@ -10,8 +10,17 @@ for schema in $schemas; do
 	echo "SET search_path TO $schema;" | cat - /sql-files/tables.sql | psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB"
 done
 
-# tables=$(psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -t -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'mil_datos' AND table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');")
+tables=$(psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -t -c "SELECT relname AS table_name FROM pg_class WHERE relkind = 'r' AND relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname = 'mil_datos') ORDER BY oid;")
 
-# for table in $tables; do
-# 	psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "COPY mil_datos.$table FROM '/csv-files/$table.csv' DELIMITER ',' CSV HEADER;"
-# done
+schemas_names=("mil_datos" "diezmil_datos" "cienmil_datos")
+schemas_sizes=("1000" "10000" "100000")
+
+for index in "${!schemas_names[@]}"; do
+	schema="${schemas_names[index]}"
+	size="${schemas_sizes[index]}"
+
+	for table in $tables; do
+		filename="${table}_data_${size}.csv"
+		psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "\COPY $schema.$table FROM '/csv-files/$filename' DELIMITER ',' CSV HEADER;"
+	done
+done

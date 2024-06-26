@@ -4,19 +4,19 @@ from ..utils.shared_faker import faker
 
 def generate_institucion_data(schema_size: int, rows_amount: int):
     institucion_keys: list[str] = []
-    file, writer = setup_csv_writer(f"institucion_data_{schema_size}.csv")
+    file, writer = setup_csv_writer(f"institucion_data_{schema_size}")
 
     writer.writerow(
-        ["ruc", "descripcion", "fundador", "fundacionFecha", "bannerUrl", "nombre"]
+        ["ruc", "descripcion", "fundador", "fundacion_fecha", "banner_url", "nombre"]
     )
 
     for _ in range(rows_amount):
         ruc = faker.numerify("%##########")
-        descripcion = faker.text()
+        descripcion = faker.text(max_nb_chars=1000)
         fundador = faker.name()
         fundacion_fecha = faker.date_between()
         banner_url = faker.image_url()
-        nombre = faker.street_name()
+        nombre = faker.unique.street_name()
 
         institucion_keys.append(ruc)
 
