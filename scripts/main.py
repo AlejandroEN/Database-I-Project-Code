@@ -1,3 +1,6 @@
+import time
+from random import randint
+
 from .data_generation.alumno import generate_alumno_data
 from .data_generation.apoderado import generate_apoderado_data
 from .data_generation.colaborador import generate_colaborador_data
@@ -16,44 +19,37 @@ from .data_generation.secretario import generate_secretario_data
 from .data_generation.sede import generate_sede_data
 from .data_generation.tutor import generate_tutor_data
 
-from random import randint
-
 
 def main() -> None:
-    data_sizes: list[int] = [100_000]
+    start_time = time.time()
+    data_sizes: list[int] = [1000]
 
     for size in data_sizes:
-        institucion_keys = generate_institucion_data(size, int(size/1000))
+        institucion_keys = generate_institucion_data(size, int(size / 1000))
 
         persona_keys = generate_persona_data(size, size * 7)
 
         colaborador_keys = generate_colaborador_data(size, size * 5, persona_keys)
 
-        sedes_amount = int(size/250)
+        sede_keys = generate_sede_data(size, int(size / 250), institucion_keys)
 
-        sede_keys = generate_sede_data(size, sedes_amount, institucion_keys)
+        director_keys = generate_director_data(size, len(sede_keys), colaborador_keys, sede_keys)
 
-        generate_director_data(size, sedes_amount, colaborador_keys, sede_keys)
-
-        generate_consejero_data(size, sedes_amount * 3, colaborador_keys, sede_keys)
+        consejero_keys = generate_consejero_data(size, len(sede_keys) * 3, colaborador_keys, sede_keys)
 
         secretario_keys = generate_secretario_data(
-            size, sedes_amount * 5, colaborador_keys, sede_keys
+            size, len(sede_keys) * 5, colaborador_keys, sede_keys
         )
 
-        profesores_amount = sedes_amount * 20
-
-        profesor_keys = generate_profesor_data(size, profesores_amount, colaborador_keys)
+        profesor_keys = generate_profesor_data(size, len(sede_keys) * 20, colaborador_keys)
 
         grado_keys = generate_grado_data(size)
 
         curso_keys = generate_curso_data(size)
 
-        salones_amount = int(size/40)
+        salon_keys = generate_salon_data(size, int(size / 40), grado_keys, sede_keys)
 
-        salon_keys = generate_salon_data(size, salones_amount, grado_keys, sede_keys)
-
-        generate_tutor_data(size, salones_amount, colaborador_keys, salon_keys)
+        tutor_keys = generate_tutor_data(size, len(salon_keys), colaborador_keys, salon_keys)
 
         apoderado_keys = generate_apoderado_data(size, int(size * 0.8), persona_keys)
 
@@ -61,15 +57,19 @@ def main() -> None:
             size, size, persona_keys, salon_keys, apoderado_keys
         )
 
-        generate_profesor_sede_data(size, sedes_amount * randint(5, 15), profesor_keys, sede_keys)
+        profesor_sede_keys = generate_profesor_sede_data(size, len(sede_keys) * randint(5, 15), profesor_keys,
+                                                         sede_keys)
 
-        generate_profesor_curso_grado_data(
-            size, size, curso_keys, grado_keys, profesor_keys
+        profesor_curso_grado_keys = generate_profesor_curso_grado_data(
+            size, len(profesor_keys) * 30, curso_keys, grado_keys, profesor_keys
         )
 
-        generate_matricula_data(
+        matricula_keys = generate_matricula_data(
             size, size, alumno_keys, sede_keys, grado_keys, secretario_keys
         )
+
+    end_time = time.time()
+    print(f"Total execution time: {end_time - start_time}")
 
 
 if __name__ == "__main__":
