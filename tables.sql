@@ -91,7 +91,7 @@ CREATE TABLE curso
 CREATE TABLE salon
 (
     aforo          INT                       NOT NULL,
-    nombre_seccion VARCHAR(50) UNIQUE        NOT NULL,
+    nombre_seccion VARCHAR(50)               NOT NULL,
     grado_id       INT REFERENCES grado (id) NOT NULL,
     sede_id        INT REFERENCES sede (id)  NOT NULL,
     PRIMARY KEY (nombre_seccion, sede_id),
@@ -101,8 +101,9 @@ CREATE TABLE salon
 CREATE TABLE tutor
 (
     dni                  CHAR(8) PRIMARY KEY REFERENCES colaborador (dni),
-    salon_nombre_seccion VARCHAR(50) REFERENCES salon (nombre_seccion) NOT NULL,
-    sede_id              INT REFERENCES sede (id)                      NOT NULL,
+    salon_nombre_seccion VARCHAR(50) NOT NULL,
+    sede_id              INT         NOT NULL,
+    FOREIGN KEY (salon_nombre_seccion, sede_id) REFERENCES salon (nombre_seccion, sede_id),
     UNIQUE (salon_nombre_seccion, sede_id)
 );
 
@@ -115,10 +116,11 @@ CREATE TABLE apoderado
 
 CREATE TABLE alumno
 (
-    dni            CHAR(8) PRIMARY KEY REFERENCES persona (dni),
-    nombre_seccion VARCHAR(50) REFERENCES salon (nombre_seccion) NOT NULL,
-    sede_id        INT REFERENCES sede (id)                      NOT NULL,
-    apoderado_dni  CHAR(8) REFERENCES apoderado (dni)            NOT NULL
+    dni                  CHAR(8) PRIMARY KEY REFERENCES persona (dni),
+    salon_nombre_seccion VARCHAR(50)                        NOT NULL,
+    salon_sede_id        INT                                NOT NULL,
+    apoderado_dni        CHAR(8) REFERENCES apoderado (dni) NOT NULL,
+    FOREIGN KEY (salon_nombre_seccion, salon_sede_id) REFERENCES salon (nombre_seccion, sede_id)
 );
 
 CREATE TABLE profesor_sede

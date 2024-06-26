@@ -13,16 +13,21 @@ def generate_matricula_data(
         secretario_keys: tuple[str, ...],
 ):
     file, writer = setup_csv_writer(f"matricula_data_{schema_size}")
+    matricula_keys: set[tuple[int, str, int]] = set()
 
     writer.writerow(["year", "alumno_dni", "sede_id", "grado_id", "secretario_dni"])
 
-    for _ in range(rows_amount):
+    while len(matricula_keys) < rows_amount:
         year = faker.year()
         alumno_dni = random.choice(alumno_keys)
         sede_id = random.choice(sede_keys)
-        grado_id = random.choice(grado_keys)
-        secretario_dni = random.choice(secretario_keys)
 
-        writer.writerow([year, alumno_dni, sede_id, grado_id, secretario_dni])
+        if (year, alumno_dni, sede_id) not in matricula_keys:
+            grado_id = random.choice(grado_keys)
+            secretario_dni = random.choice(secretario_keys)
+
+            matricula_keys.add((year, alumno_dni, sede_id))
+
+            writer.writerow([year, alumno_dni, sede_id, grado_id, secretario_dni])
 
     file.close()
