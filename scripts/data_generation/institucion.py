@@ -12,7 +12,7 @@ def generate_institucion_data(schema_size: int, rows_amount: int):
 
     for _ in range(rows_amount):
         ruc = faker.numerify("%##########")
-        descripcion = faker.text(max_nb_chars=1000)
+        descripcion = faker.text(max_nb_chars=500)
         fundador = faker.name()
         fundacion_fecha = faker.date_between()
         banner_url = faker.image_url()
