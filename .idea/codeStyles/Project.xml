@@ -112,7 +112,7 @@
       <option name="KEYWORD_CASE" value="2" />
       <option name="TYPE_CASE" value="3" />
       <option name="ALIAS_CASE" value="1" />
-      <option name="TABLE_OPENING" value="1" />
+      <option name="TABLE_OPENING" value="0" />
       <option name="TABLE_CONTENT" value="2" />
       <option name="TABLE_CLOSING" value="2" />
     </SqlCodeStyleSettings>

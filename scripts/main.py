@@ -22,7 +22,7 @@ from .data_generation.tutor import generate_tutor_data
 
 def main() -> None:
     start_time = time.time()
-    data_sizes: list[int] = [1000]
+    data_sizes: list[int] = [1_000, 10_000, 100_000]
 
     for size in data_sizes:
         institucion_keys = generate_institucion_data(size, int(size / 1000))
@@ -33,15 +33,21 @@ def main() -> None:
 
         sede_keys = generate_sede_data(size, int(size / 250), institucion_keys)
 
-        director_keys = generate_director_data(size, len(sede_keys), colaborador_keys, sede_keys)
+        director_keys = generate_director_data(
+            size, len(sede_keys), colaborador_keys, sede_keys
+        )
 
-        consejero_keys = generate_consejero_data(size, len(sede_keys) * 3, colaborador_keys, sede_keys)
+        consejero_keys = generate_consejero_data(
+            size, len(sede_keys) * 3, colaborador_keys, sede_keys
+        )
 
         secretario_keys = generate_secretario_data(
             size, len(sede_keys) * 5, colaborador_keys, sede_keys
         )
 
-        profesor_keys = generate_profesor_data(size, len(sede_keys) * 20, colaborador_keys)
+        profesor_keys = generate_profesor_data(
+            size, len(sede_keys) * 20, colaborador_keys
+        )
 
         grado_keys = generate_grado_data(size)
 
@@ -49,7 +55,9 @@ def main() -> None:
 
         salon_keys = generate_salon_data(size, int(size / 40), grado_keys, sede_keys)
 
-        tutor_keys = generate_tutor_data(size, len(salon_keys), colaborador_keys, salon_keys)
+        tutor_keys = generate_tutor_data(
+            size, len(salon_keys), colaborador_keys, salon_keys
+        )
 
         apoderado_keys = generate_apoderado_data(size, int(size * 0.8), persona_keys)
 
@@ -57,8 +65,9 @@ def main() -> None:
             size, size, persona_keys, salon_keys, apoderado_keys
         )
 
-        profesor_sede_keys = generate_profesor_sede_data(size, len(sede_keys) * randint(5, 15), profesor_keys,
-                                                         sede_keys)
+        profesor_sede_keys = generate_profesor_sede_data(
+            size, len(sede_keys) * randint(5, 15), profesor_keys, sede_keys
+        )
 
         profesor_curso_grado_keys = generate_profesor_curso_grado_data(
             size, len(profesor_keys) * 30, curso_keys, grado_keys, profesor_keys

@@ -6,5 +6,6 @@
     <file url="file://$PROJECT_DIR$/schemas.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/tables.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/triggers.sql" dialect="PostgreSQL" />
+    <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

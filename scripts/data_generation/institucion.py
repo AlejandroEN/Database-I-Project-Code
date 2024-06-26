@@ -16,7 +16,7 @@ def generate_institucion_data(schema_size: int, rows_amount: int):
         fundador = faker.name()
         fundacion_fecha = faker.date_between()
         banner_url = faker.image_url()
-        nombre = faker.street_name()
+        nombre = faker.unique.street_name()
 
         institucion_keys.append(ruc)
 
