@@ -8,8 +8,8 @@ services:
       POSTGRES_DB: database
     volumes:
       - ./init.sh:/docker-entrypoint-initdb.d/init.sh
-      - ./schemas.sql:/sql-files/schemas.sql
-      - ./tables.sql:/sql-files/tables.sql
+      - ./sql/create_schemas.sql:/sql-files/create_schemas.sql
+      - ./sql/create_tables.sql:/sql-files/create_tables.sql
       - ./data/:/csv-files/
     ports:
       - "5433:5432"

@@ -27,7 +27,7 @@ def generate_colaborador_data(
         cci = faker.numerify("####################")
         numero_celular = faker.numerify("$%#######")
         horas_semanales_trabajo = faker.random_int(1, 168)
-        esta_activo = faker.boolean()
+        esta_activo = True
 
         colaborador_keys.append(dni)
 
