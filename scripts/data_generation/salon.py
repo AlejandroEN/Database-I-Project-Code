@@ -20,7 +20,7 @@ def generate_salon_data(
         sede_id = random.choice(sede_keys)
 
         if (nombre_seccion, sede_id) not in salon_keys:
-            aforo = faker.random_int(30, 50)
+            aforo = faker.random_int(5, 40)
             grado_id = random.choice(grado_keys)
             salon_keys.add((nombre_seccion, sede_id))
 
