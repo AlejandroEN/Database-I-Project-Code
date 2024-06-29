@@ -12,8 +12,8 @@ done
 
 tables=$(psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -t -c "SELECT relname AS table_name FROM pg_class WHERE relkind = 'r' AND relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname = 'mil_datos') ORDER BY oid;")
 
-schemas_names=("mil_datos" "diezmil_datos" "cienmil_datos")
-schemas_sizes=("1000" "10000" "100000")
+schemas_names=("mil_datos" "diezmil_datos" "cienmil_datos" "millon_datos")
+schemas_sizes=("1000" "10000" "100000" "1000000")
 
 for index in "${!schemas_names[@]}"; do
 	schema="${schemas_names[index]}"

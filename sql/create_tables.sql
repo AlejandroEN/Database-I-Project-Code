@@ -135,14 +135,14 @@ CREATE TABLE profesor_curso_grado
     curso_id          INT REFERENCES curso (id),
     grado_id          INT REFERENCES grado (id),
     profesor_dni      CHAR(8) REFERENCES profesor (dni),
-    periodo_academico DATE NOT NULL,
+    periodo_academico INT NOT NULL,
     PRIMARY KEY (curso_id, grado_id, profesor_dni),
-    CHECK (periodo_academico <= CURRENT_DATE)
+    CHECK (periodo_academico <= EXTRACT(YEAR FROM CURRENT_DATE))
 );
 
 CREATE TABLE matricula
 (
-    year           INT,
+    year           INT                                 NOT NULL,
     alumno_dni     CHAR(8) REFERENCES alumno (dni),
     sede_id        INT REFERENCES sede (id),
     grado_id       INT REFERENCES grado (id)           NOT NULL,

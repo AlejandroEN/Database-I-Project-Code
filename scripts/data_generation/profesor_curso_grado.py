@@ -22,7 +22,7 @@ def generate_profesor_curso_grado_data(
         profesor_dni = random.choice(profesor_keys)
 
         if (curso_id, grado_id, profesor_dni) not in profesor_curso_grado_keys:
-            periodo_academico = faker.date_between()
+            periodo_academico = faker.random_int(1960, 2024)
             profesor_curso_grado_keys.add((curso_id, grado_id, profesor_dni))
             writer.writerow([curso_id, grado_id, profesor_dni, periodo_academico])
 
