@@ -1,5 +1,4 @@
-SET search_path TO cienmil_datos;
-
+SET search_path TO millon_datos;
 SET enable_mergejoin TO ON;
 SET enable_hashjoin TO ON;
 SET enable_bitmapscan TO ON;
@@ -7,7 +6,6 @@ SET enable_sort TO ON;
 SET enable_nestloop TO ON;
 SET enable_indexscan TO ON;
 SET enable_indexonlyscan TO ON;
-
 
 VACUUM FULL persona;
 VACUUM FULL colaborador;

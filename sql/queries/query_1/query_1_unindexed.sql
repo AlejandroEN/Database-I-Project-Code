@@ -1,5 +1,4 @@
 SET search_path TO millon_datos;
-
 SET enable_mergejoin TO OFF;
 SET enable_hashjoin TO OFF;
 SET enable_bitmapscan TO OFF;
