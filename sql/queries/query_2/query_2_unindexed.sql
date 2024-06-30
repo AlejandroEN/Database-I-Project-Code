@@ -7,9 +7,10 @@ SET enable_nestloop TO OFF;
 SET enable_indexscan TO OFF;
 SET enable_indexonlyscan TO OFF;
 
-VACUUM colaborador;
-VACUUM persona;
-VACUUM profesor_sede;
+VACUUM FULL colaborador;
+VACUUM FULL persona;
+VACUUM FULL profesor_sede;
+VACUUM FULL sede;
 
 EXPLAIN ANALYSE
 SELECT persona.nombres || ' ' || persona.primer_apellido || ' ' || persona.segundo_apellido AS nombre_completo,
