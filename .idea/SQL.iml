@@ -5,11 +5,4 @@
     <orderEntry type="jdk" jdkName="Python 3.12 (SQL)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PyNamespacePackagesService">
-    <option name="namespacePackageFolders">
-      <list>
-        <option value="$MODULE_DIR$/scripts" />
-      </list>
-    </option>
-  </component>
 </module>
