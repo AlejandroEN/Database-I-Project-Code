@@ -37,7 +37,7 @@ CREATE TABLE colaborador
     CHECK (sueldo_hora > 0.0),
     CHECK (cci NOT LIKE '%[^0-9]%'),
     CHECK (numero_celular LIKE '+%[0-9 ]%' OR numero_celular NOT LIKE '%[^0-9 ]%'),
-    CHECK (horas_semanales_trabajo BETWEEN 1 AND 168)
+    CHECK (horas_semanales_trabajo BETWEEN 1 AND 60)
 );
 
 CREATE TABLE sede
