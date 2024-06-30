@@ -34,7 +34,6 @@ FROM colaborador
                     GROUP BY profesor_sede.profesor_dni) numero_sedes_aniversario
                    ON colaborador.dni = numero_sedes_aniversario.profesor_dni
 WHERE colaborador.esta_activo = TRUE
-  AND DATE_PART('year', AGE(persona.nacimiento_fecha)) > 45
   AND persona.nacimiento_fecha BETWEEN '1960-01-01' AND '1980-12-31'
 ORDER BY nombre_completo;
 
