@@ -1,10 +1,12 @@
-SET enable_mergejoin TO OFF;
-SET enable_hashjoin TO OFF;
-SET enable_bitmapscan TO OFF;
-SET enable_sort TO OFF;
-SET enable_nestloop TO OFF;
-SET enable_indexscan TO OFF;
-SET enable_indexonlyscan TO OFF;
+SET enable_mergejoin TO ON;
+SET enable_hashjoin TO ON;
+SET enable_bitmapscan TO ON;
+SET enable_sort TO ON;
+SET enable_nestloop TO ON;
+SET enable_indexscan TO ON;
+SET enable_indexonlyscan TO ON;
+
+CREATE INDEX IF NOT EXISTS idx_horas_semanales_trabajo ON colaborador(horas_semanales_trabajo);
 
 VACUUM FULL colaborador;
 VACUUM FULL apoderado;
@@ -34,3 +36,4 @@ WHERE persona.dni IN (SELECT alumno.dni
                                                                                AND colaborador.sueldo_hora * colaborador.horas_semanales_trabajo * 4 < 2000)))
   AND persona.nacimiento_fecha > CURRENT_DATE - INTERVAL '18 years';
 
+DROP INDEX IF EXISTS idx_horas_semanales_trabajo;
