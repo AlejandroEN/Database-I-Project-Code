@@ -1,0 +1,36 @@
+Nested Loop  (cost=22363.47..23334.24 rows=319 width=54) (actual time=102.389..105.061 rows=0 loops=1)
+  ->  HashAggregate  (cost=22363.05..22379.52 rows=1647 width=18) (actual time=102.388..105.059 rows=0 loops=1)
+        Group Key: alumno.dni
+        Batches: 1  Memory Usage: 73kB
+        ->  Gather  (cost=15442.20..22358.93 rows=1647 width=18) (actual time=102.378..105.048 rows=0 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              ->  Parallel Hash Semi Join  (cost=14442.20..21194.23 rows=686 width=18) (actual time=98.742..98.747 rows=0 loops=3)
+                    Hash Cond: (alumno.dni = matricula.alumno_dni)
+                    ->  Parallel Hash Semi Join  (cost=7236.31..13971.70 rows=3432 width=9) (actual time=23.064..23.067 rows=0 loops=3)
+                          Hash Cond: (alumno.apoderado_dni = apoderado.dni)
+                          ->  Parallel Seq Scan on alumno  (cost=0.00..6150.33 rows=208333 width=18) (never executed)
+                          ->  Parallel Hash  (cost=7187.86..7187.86 rows=3876 width=18) (actual time=22.846..22.848 rows=0 loops=3)
+                                Buckets: 8192  Batches: 1  Memory Usage: 0kB
+                                ->  Parallel Hash Join  (cost=1669.26..7187.86 rows=3876 width=18) (actual time=22.707..22.709 rows=0 loops=3)
+                                      Hash Cond: (apoderado.dni = colaborador.dni)
+                                      ->  Parallel Seq Scan on apoderado  (cost=0.00..4900.94 rows=235294 width=9) (actual time=0.010..9.005 rows=133333 loops=3)
+                                      ->  Parallel Hash  (cost=1620.81..1620.81 rows=3876 width=9) (actual time=2.666..2.667 rows=605 loops=3)
+                                            Buckets: 8192  Batches: 1  Memory Usage: 192kB
+                                            ->  Parallel Bitmap Heap Scan on colaborador  (cost=222.19..1620.81 rows=3876 width=9) (actual time=0.806..2.498 rows=605 loops=3)
+                                                  Recheck Cond: (horas_semanales_trabajo > 48)
+                                                  Filter: (esta_activo AND (((sueldo_hora * (horas_semanales_trabajo)::double precision) * '4'::double precision) < '2000'::double precision))
+                                                  Rows Removed by Filter: 6074
+                                                  Heap Blocks: exact=457
+                                                  ->  Bitmap Index Scan on idx_horas_semanales_trabajo  (cost=0.00..220.54 rows=19767 width=0) (actual time=0.590..0.591 rows=20037 loops=1)
+                                                        Index Cond: (horas_semanales_trabajo > 48)
+                    ->  Parallel Hash  (cost=6470.59..6470.59 rows=58824 width=9) (actual time=75.020..75.021 rows=96930 loops=3)
+                          Buckets: 524288 (originally 131072)  Batches: 1 (originally 1)  Memory Usage: 20864kB
+                          ->  Parallel Seq Scan on matricula  (cost=0.00..6470.59 rows=58824 width=9) (actual time=0.016..35.684 rows=96930 loops=3)
+                                Filter: ((year)::numeric <= (EXTRACT(year FROM CURRENT_DATE) - '2'::numeric))
+                                Rows Removed by Filter: 3070
+  ->  Index Scan using persona_pkey on persona  (cost=0.42..0.58 rows=1 width=63) (never executed)
+        Index Cond: (dni = alumno.dni)
+        Filter: (nacimiento_fecha > (CURRENT_DATE - '18 years'::interval))
+Planning Time: 0.749 ms
+Execution Time: 105.109 ms

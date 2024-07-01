@@ -22,7 +22,7 @@ from .data_generation.tutor import generate_tutor_data
 
 def main() -> None:
     start_time = time.time()
-    data_sizes: list[int] = [1_000, 10_000, 100_000]
+    data_sizes: list[int] = [1_000, 10_000, 100_000, 1_000_000]
 
     for size in data_sizes:
         institucion_keys = generate_institucion_data(size, size // 1000)

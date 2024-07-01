@@ -1,0 +1,29 @@
+Nested Loop Semi Join  (cost=40000000000.00..40000000141.21 rows=20 width=52) (actual time=204.208..204.210 rows=0 loops=1)
+  Join Filter: (persona.dni = alumno.dni)
+  ->  Seq Scan on persona  (cost=0.00..30.50 rows=199 width=61) (actual time=203.841..203.920 rows=200 loops=1)
+        Filter: (nacimiento_fecha > (CURRENT_DATE - '18 years'::interval))
+        Rows Removed by Filter: 800
+  ->  Materialize  (cost=30000000000.00..30000000107.73 rows=1 width=18) (actual time=0.001..0.001 rows=0 loops=200)
+        ->  Nested Loop Semi Join  (cost=30000000000.00..30000000107.72 rows=1 width=18) (actual time=0.263..0.264 rows=0 loops=1)
+              Join Filter: (alumno.dni = matricula.alumno_dni)
+              ->  Nested Loop Semi Join  (cost=20000000000.00..20000000088.72 rows=6 width=9) (actual time=0.262..0.263 rows=0 loops=1)
+                    Join Filter: (apoderado.dni = alumno.apoderado_dni)
+                    ->  Seq Scan on alumno  (cost=0.00..10.00 rows=500 width=18) (actual time=0.012..0.037 rows=500 loops=1)
+                    ->  Materialize  (cost=10000000000.00..10000000041.24 rows=5 width=18) (actual time=0.000..0.000 rows=0 loops=500)
+                          ->  Nested Loop  (cost=10000000000.00..10000000041.21 rows=5 width=18) (actual time=0.169..0.169 rows=0 loops=1)
+                                Join Filter: (apoderado.dni = colaborador.dni)
+                                Rows Removed by Join Filter: 1200
+                                ->  Seq Scan on apoderado  (cost=0.00..7.00 rows=400 width=9) (actual time=0.007..0.024 rows=400 loops=1)
+                                ->  Materialize  (cost=0.00..4.28 rows=5 width=9) (actual time=0.000..0.000 rows=3 loops=400)
+                                      ->  Seq Scan on colaborador  (cost=0.00..4.25 rows=5 width=9) (actual time=0.010..0.014 rows=3 loops=1)
+                                            Filter: (esta_activo AND (horas_semanales_trabajo > 48) AND (((sueldo_hora * (horas_semanales_trabajo)::double precision) * '4'::double precision) < '2000'::double precision))
+                                            Rows Removed by Filter: 97
+              ->  Materialize  (cost=0.00..10.25 rows=100 width=9) (never executed)
+                    ->  Seq Scan on matricula  (cost=0.00..9.75 rows=100 width=9) (never executed)
+                          Filter: ((year)::numeric <= (EXTRACT(year FROM CURRENT_DATE) - '2'::numeric))
+Planning Time: 0.971 ms
+JIT:
+  Functions: 30
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 1.990 ms, Inlining 42.684 ms, Optimization 102.756 ms, Emission 58.358 ms, Total 205.787 ms"
+Execution Time: 206.292 ms
