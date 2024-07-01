@@ -6,16 +6,15 @@ SET enable_nestloop TO ON;
 SET enable_indexscan TO ON;
 SET enable_indexonlyscan TO ON;
 
-CREATE INDEX IF NOT EXISTS idx_horas_semanales_trabajo ON colaborador(horas_semanales_trabajo);
-
 VACUUM FULL colaborador;
 VACUUM FULL apoderado;
 VACUUM FULL alumno;
 VACUUM FULL matricula;
 VACUUM FULL persona;
 
-EXPLAIN ANALYSE
+CREATE INDEX IF NOT EXISTS idx_horas_semanales_trabajo ON colaborador (horas_semanales_trabajo);
 
+EXPLAIN ANALYSE
 SELECT persona.nombres,
        persona.primer_apellido,
        persona.segundo_apellido,
@@ -35,5 +34,3 @@ WHERE persona.dni IN (SELECT alumno.dni
                                                                                AND colaborador.horas_semanales_trabajo > 48
                                                                                AND colaborador.sueldo_hora * colaborador.horas_semanales_trabajo * 4 < 2000)))
   AND persona.nacimiento_fecha > CURRENT_DATE - INTERVAL '18 years';
-
-DROP INDEX IF EXISTS idx_horas_semanales_trabajo;
