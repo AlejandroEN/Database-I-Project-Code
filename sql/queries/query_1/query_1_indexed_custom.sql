@@ -1,4 +1,3 @@
-SET search_path TO millon_datos;
 SET enable_mergejoin TO ON;
 SET enable_hashjoin TO ON;
 SET enable_bitmapscan TO ON;
@@ -7,13 +6,13 @@ SET enable_nestloop TO ON;
 SET enable_indexscan TO ON;
 SET enable_indexonlyscan TO ON;
 
-CREATE INDEX idx_sede_construccion_fecha ON sede (construccion_fecha);
-
 VACUUM FULL persona;
 VACUUM FULL colaborador;
 VACUUM FULL director;
 VACUUM FULL sede;
 VACUUM FULL matricula;
+
+CREATE INDEX IF NOT EXISTS idx_sede_construccion_fecha ON sede (construccion_fecha);
 
 EXPLAIN ANALYSE
 SELECT persona.nombres || ' ' || persona.primer_apellido || ' ' || persona.segundo_apellido AS nombre_director,
@@ -28,7 +27,7 @@ FROM director
          JOIN sede ON director.sede_id = sede.id
 WHERE sede.id IN (SELECT sede.id
                   FROM (SELECT sede.id,
-                               COUNT(salon.nombre_seccion) AS numero_salones,
+                               COUNT(salon.nombre_seccion)                              AS numero_salones,
                                (SELECT COUNT(matricula.alumno_dni)
                                 FROM matricula
                                 WHERE matricula.sede_id = sede.id
@@ -43,5 +42,3 @@ WHERE sede.id IN (SELECT sede.id
                   WHERE sedes_filtradas.numero_alumnos <= 300
                     AND sedes_filtradas.numero_alumnos >= 200)
 ORDER BY sede.id;
-
-DROP INDEX IF EXISTS idx_sede_construccion_fecha;
