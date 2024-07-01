@@ -1,0 +1,29 @@
+Nested Loop  (cost=35.12..35.31 rows=1 width=52) (actual time=0.299..0.302 rows=0 loops=1)
+  ->  HashAggregate  (cost=34.85..34.86 rows=1 width=18) (actual time=0.299..0.301 rows=0 loops=1)
+        Group Key: alumno.dni
+        Batches: 1  Memory Usage: 24kB
+        ->  Hash Semi Join  (cost=23.44..34.85 rows=1 width=18) (actual time=0.297..0.299 rows=0 loops=1)
+              Hash Cond: (alumno.dni = matricula.alumno_dni)
+              ->  Hash Semi Join  (cost=12.44..23.82 rows=6 width=9) (actual time=0.090..0.093 rows=0 loops=1)
+                    Hash Cond: (alumno.apoderado_dni = apoderado.dni)
+                    ->  Seq Scan on alumno  (cost=0.00..10.00 rows=500 width=18) (actual time=0.002..0.003 rows=1 loops=1)
+                    ->  Hash  (cost=12.37..12.37 rows=5 width=18) (actual time=0.087..0.088 rows=0 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 8kB
+                          ->  Hash Join  (cost=4.31..12.37 rows=5 width=18) (actual time=0.087..0.088 rows=0 loops=1)
+                                Hash Cond: (apoderado.dni = colaborador.dni)
+                                ->  Seq Scan on apoderado  (cost=0.00..7.00 rows=400 width=9) (actual time=0.006..0.038 rows=400 loops=1)
+                                ->  Hash  (cost=4.25..4.25 rows=5 width=9) (actual time=0.014..0.014 rows=3 loops=1)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      ->  Seq Scan on colaborador  (cost=0.00..4.25 rows=5 width=9) (actual time=0.005..0.013 rows=3 loops=1)
+                                            Filter: (esta_activo AND (horas_semanales_trabajo > 48) AND (((sueldo_hora * (horas_semanales_trabajo)::double precision) * '4'::double precision) < '2000'::double precision))
+                                            Rows Removed by Filter: 97
+              ->  Hash  (cost=9.75..9.75 rows=100 width=9) (actual time=0.203..0.203 rows=292 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 20kB
+                    ->  Seq Scan on matricula  (cost=0.00..9.75 rows=100 width=9) (actual time=0.012..0.141 rows=292 loops=1)
+                          Filter: ((year)::numeric <= (EXTRACT(year FROM CURRENT_DATE) - '2'::numeric))
+                          Rows Removed by Filter: 8
+  ->  Index Scan using persona_pkey on persona  (cost=0.28..0.45 rows=1 width=61) (never executed)
+        Index Cond: (dni = alumno.dni)
+        Filter: (nacimiento_fecha > (CURRENT_DATE - '18 years'::interval))
+Planning Time: 0.787 ms
+Execution Time: 0.351 ms

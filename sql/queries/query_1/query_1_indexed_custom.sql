@@ -34,6 +34,7 @@ WHERE sede.id IN (SELECT sede.id
                                   AND matricula.year = EXTRACT(YEAR FROM CURRENT_DATE)) AS numero_alumnos
                         FROM sede
                                  LEFT JOIN salon ON sede.id = salon.sede_id
+                        WHERE sede.construccion_fecha BETWEEN '1900-01-01' AND '2000-12-31'
                         GROUP BY sede.id,
                                  sede.construccion_fecha
                         ORDER BY numero_salones DESC,
