@@ -1,0 +1,35 @@
+Limit  (cost=23902791.56..23902791.61 rows=20 width=131) (actual time=25310.885..25310.893 rows=20 loops=1)
+  ->  Sort  (cost=23902791.56..23902792.49 rows=369 width=131) (actual time=25124.945..25124.951 rows=20 loops=1)
+        Sort Key: sede.construccion_fecha
+        Sort Method: top-N heapsort  Memory: 34kB
+        ->  Nested Loop  (cost=0.70..23902781.75 rows=369 width=131) (actual time=20.999..25124.576 rows=1048 loops=1)
+              Join Filter: (director.dni = d_persona.dni)
+              ->  Nested Loop  (cost=0.28..23902370.40 rows=369 width=93) (actual time=20.960..25118.554 rows=1048 loops=1)
+                    Join Filter: (director.sede_id = sede.id)
+                    Rows Removed by Join Filter: 1546324
+                    ->  Nested Loop  (cost=0.28..31720.98 rows=2000 width=32) (actual time=0.065..129.089 rows=2000 loops=1)
+                          ->  Seq Scan on colaborador d_colaborador  (cost=0.00..2137.00 rows=100000 width=19) (actual time=0.014..5.534 rows=100000 loops=1)
+                          ->  Index Scan using director_pkey on director  (cost=0.28..0.30 rows=1 width=13) (actual time=0.001..0.001 rows=0 loops=100000)
+                                Index Cond: (dni = d_colaborador.dni)
+                    ->  Materialize  (cost=0.00..23859585.84 rows=369 width=69) (actual time=0.010..12.464 rows=774 loops=2000)
+                          ->  Seq Scan on sede  (cost=0.00..23859584.00 rows=369 width=69) (actual time=20.887..24875.205 rows=1048 loops=1)
+                                Filter: ((construccion_fecha >= '1990-01-01'::date) AND (construccion_fecha <= '2010-12-31'::date) AND (((SubPlan 1) + (SubPlan 2)) <= 400))
+                                Rows Removed by Filter: 952
+                                SubPlan 1
+                                  ->  Aggregate  (cost=1612.11..1612.12 rows=1 width=8) (actual time=3.302..3.302 rows=1 loops=1108)
+                                        ->  Seq Scan on profesor_sede  (cost=0.00..1612.00 rows=45 width=0) (actual time=0.077..3.288 rows=45 loops=1108)
+                                              Filter: (sede_id = sede.id)
+                                              Rows Removed by Filter: 89955
+                                SubPlan 2
+                                  ->  Aggregate  (cost=10317.62..10317.64 rows=1 width=8) (actual time=19.135..19.135 rows=1 loops=1108)
+                                        ->  Seq Scan on alumno  (cost=0.00..10317.00 rows=250 width=0) (actual time=0.085..19.105 rows=252 loops=1108)
+                                              Filter: (salon_sede_id = sede.id)
+                                              Rows Removed by Filter: 499748
+              ->  Index Scan using persona_pkey on persona d_persona  (cost=0.42..1.09 rows=1 width=61) (actual time=0.005..0.005 rows=1 loops=1048)
+                    Index Cond: (dni = d_colaborador.dni)
+Planning Time: 0.824 ms
+JIT:
+  Functions: 34
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 1.018 ms, Inlining 16.752 ms, Optimization 98.120 ms, Emission 71.121 ms, Total 187.011 ms"
+Execution Time: 25312.110 ms

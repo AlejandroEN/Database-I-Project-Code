@@ -1,0 +1,51 @@
+Nested Loop Left Join  (cost=2622.27..255685.26 rows=1584 width=84) (actual time=52.767..559.760 rows=3149 loops=1)
+  ->  Hash Join  (cost=2621.99..190974.11 rows=1584 width=93) (actual time=52.461..139.479 rows=3149 loops=1)
+        Hash Cond: (colaborador.dni = persona.dni)
+        ->  Seq Scan on colaborador  (cost=0.00..188339.00 rows=5000 width=42) (actual time=25.635..107.606 rows=10000 loops=1)
+              Filter: (esta_activo AND (SubPlan 3))
+              SubPlan 3
+                ->  Nested Loop  (cost=0.29..18.81 rows=1 width=0) (actual time=0.008..0.008 rows=1 loops=10000)
+                      ->  Seq Scan on sede sede_2  (cost=0.00..10.50 rows=1 width=0) (actual time=0.005..0.005 rows=1 loops=10000)
+                            Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                            Rows Removed by Filter: 7
+                      ->  Index Only Scan using colaborador_pkey on colaborador c_1  (cost=0.29..8.30 rows=1 width=0) (actual time=0.002..0.002 rows=1 loops=10000)
+                            Index Cond: (dni = colaborador.dni)
+                            Heap Fetches: 10000
+        ->  Hash  (cost=2226.06..2226.06 rows=31674 width=60) (actual time=26.747..26.747 rows=31657 loops=1)
+              Buckets: 32768  Batches: 1  Memory Usage: 3117kB
+              ->  Bitmap Heap Scan on persona  (cost=524.95..2226.06 rows=31674 width=60) (actual time=1.793..11.336 rows=31657 loops=1)
+                    Recheck Cond: ((nacimiento_fecha >= '1960-01-01'::date) AND (nacimiento_fecha <= '1980-12-31'::date))
+                    Heap Blocks: exact=1226
+                    ->  Bitmap Index Scan on idx_persona_nacimiento_fecha  (cost=0.00..517.03 rows=31674 width=0) (actual time=1.610..1.610 rows=31657 loops=1)
+                          Index Cond: ((nacimiento_fecha >= '1960-01-01'::date) AND (nacimiento_fecha <= '1980-12-31'::date))
+  ->  Index Only Scan using profesor_pkey on profesor  (cost=0.28..0.32 rows=1 width=9) (actual time=0.002..0.002 rows=1 loops=3149)
+        Index Cond: (dni = colaborador.dni)
+        Heap Fetches: 0
+  SubPlan 1
+    ->  Aggregate  (cost=21.65..21.66 rows=1 width=8) (actual time=0.136..0.136 rows=1 loops=1579)
+          ->  Nested Loop  (cost=4.30..21.65 rows=1 width=4) (actual time=0.130..0.135 rows=0 loops=1579)
+                Join Filter: (sede.id = profesor_sede.sede_id)
+                Rows Removed by Join Filter: 15
+                ->  Seq Scan on sede  (cost=0.00..10.50 rows=1 width=4) (actual time=0.005..0.105 rows=8 loops=1579)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      Rows Removed by Filter: 192
+                ->  Bitmap Heap Scan on profesor_sede  (cost=4.30..11.13 rows=2 width=4) (actual time=0.003..0.003 rows=2 loops=12632)
+                      Recheck Cond: (profesor_dni = profesor.dni)
+                      Heap Blocks: exact=22584
+                      ->  Bitmap Index Scan on profesor_sede_pkey  (cost=0.00..4.30 rows=2 width=0) (actual time=0.002..0.002 rows=2 loops=12632)
+                            Index Cond: (profesor_dni = profesor.dni)
+  SubPlan 2
+    ->  Aggregate  (cost=18.82..18.83 rows=1 width=4) (actual time=0.124..0.124 rows=1 loops=1570)
+          ->  Nested Loop  (cost=0.29..18.81 rows=1 width=4) (actual time=0.007..0.122 rows=8 loops=1570)
+                ->  Seq Scan on sede sede_1  (cost=0.00..10.50 rows=1 width=4) (actual time=0.005..0.105 rows=8 loops=1570)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      Rows Removed by Filter: 192
+                ->  Index Only Scan using colaborador_pkey on colaborador c  (cost=0.29..8.30 rows=1 width=0) (actual time=0.002..0.002 rows=1 loops=12560)
+                      Index Cond: (dni = colaborador.dni)
+                      Heap Fetches: 12560
+Planning Time: 0.882 ms
+JIT:
+  Functions: 47
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 3.236 ms, Inlining 0.000 ms, Optimization 1.488 ms, Emission 24.244 ms, Total 28.969 ms"
+Execution Time: 563.422 ms

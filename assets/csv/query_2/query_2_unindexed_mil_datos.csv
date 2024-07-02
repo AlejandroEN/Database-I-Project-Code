@@ -1,0 +1,40 @@
+Nested Loop Left Join  (cost=20000000000.00..5340000002698.95 rows=216 width=83) (actual time=305.255..305.257 rows=0 loops=1)
+  Join Filter: (colaborador.dni = profesor.dni)
+  ->  Nested Loop  (cost=10000000000.00..1010000000717.34 rows=17 width=92) (actual time=305.254..305.255 rows=0 loops=1)
+        Join Filter: (colaborador.dni = persona.dni)
+        ->  Seq Scan on colaborador  (cost=0.00..1000000000436.50 rows=50 width=42) (actual time=305.254..305.255 rows=0 loops=1)
+              Filter: (esta_activo AND (SubPlan 3))
+              Rows Removed by Filter: 100
+              SubPlan 3
+                ->  Nested Loop  (cost=10000000000.00..10000000004.33 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=100)
+                      ->  Seq Scan on sede sede_2  (cost=0.00..1.07 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=100)
+                            Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                            Rows Removed by Filter: 2
+                      ->  Seq Scan on colaborador c_1  (cost=0.00..3.25 rows=1 width=0) (never executed)
+                            Filter: (dni = colaborador.dni)
+        ->  Materialize  (cost=0.00..29.68 rows=336 width=59) (never executed)
+              ->  Seq Scan on persona  (cost=0.00..28.00 rows=336 width=59) (never executed)
+                    Filter: ((nacimiento_fecha >= '1960-01-01'::date) AND (nacimiento_fecha <= '1980-12-31'::date))
+  ->  Materialize  (cost=0.00..29.05 rows=1270 width=36) (never executed)
+        ->  Seq Scan on profesor  (cost=0.00..22.70 rows=1270 width=36) (never executed)
+  SubPlan 1
+    ->  Aggregate  (cost=10000000003.15..10000000003.16 rows=1 width=8) (never executed)
+          ->  Nested Loop  (cost=10000000000.00..10000000003.15 rows=1 width=4) (never executed)
+                Join Filter: (sede.id = profesor_sede.sede_id)
+                ->  Seq Scan on sede  (cost=0.00..1.07 rows=1 width=4) (never executed)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                ->  Seq Scan on profesor_sede  (cost=0.00..2.05 rows=2 width=4) (never executed)
+                      Filter: (profesor_dni = profesor.dni)
+  SubPlan 2
+    ->  Aggregate  (cost=10000000004.34..10000000004.35 rows=1 width=4) (never executed)
+          ->  Nested Loop  (cost=10000000000.00..10000000004.33 rows=1 width=4) (never executed)
+                ->  Seq Scan on sede sede_1  (cost=0.00..1.07 rows=1 width=4) (never executed)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                ->  Seq Scan on colaborador c  (cost=0.00..3.25 rows=1 width=0) (never executed)
+                      Filter: (dni = colaborador.dni)
+Planning Time: 0.559 ms
+JIT:
+  Functions: 45
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 3.748 ms, Inlining 31.726 ms, Optimization 152.821 ms, Emission 120.408 ms, Total 308.703 ms"
+Execution Time: 309.166 ms

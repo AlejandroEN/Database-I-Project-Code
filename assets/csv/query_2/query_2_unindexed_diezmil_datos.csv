@@ -1,0 +1,47 @@
+Nested Loop Left Join  (cost=20000000000.00..13160000057807.34 rows=157 width=83) (actual time=395.100..707.557 rows=307 loops=1)
+  Join Filter: (colaborador.dni = profesor.dni)
+  Rows Removed by Join Filter: 115843
+  ->  Nested Loop  (cost=10000000000.00..10010000050127.86 rows=157 width=92) (actual time=394.869..668.077 rows=307 loops=1)
+        Join Filter: (colaborador.dni = persona.dni)
+        Rows Removed by Join Filter: 2228535
+        ->  Seq Scan on colaborador  (cost=0.00..10000000026282.00 rows=500 width=42) (actual time=391.820..420.063 rows=1000 loops=1)
+              Filter: (esta_activo AND (SubPlan 3))
+              SubPlan 3
+                ->  Nested Loop  (cost=10000000000.00..10000000026.26 rows=1 width=0) (actual time=0.027..0.027 rows=1 loops=1000)
+                      ->  Seq Scan on sede sede_2  (cost=0.00..1.75 rows=1 width=0) (actual time=0.002..0.002 rows=1 loops=1000)
+                            Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      ->  Seq Scan on colaborador c_1  (cost=0.00..24.50 rows=1 width=0) (actual time=0.024..0.024 rows=1 loops=1000)
+                            Filter: (dni = colaborador.dni)
+                            Rows Removed by Filter: 500
+        ->  Materialize  (cost=0.00..288.71 rows=3142 width=59) (actual time=0.000..0.085 rows=2229 loops=1000)
+              ->  Seq Scan on persona  (cost=0.00..273.00 rows=3142 width=59) (actual time=0.012..0.700 rows=3148 loops=1)
+                    Filter: ((nacimiento_fecha >= '1960-01-01'::date) AND (nacimiento_fecha <= '1980-12-31'::date))
+                    Rows Removed by Filter: 6852
+  ->  Materialize  (cost=0.00..10.50 rows=500 width=9) (actual time=0.000..0.015 rows=378 loops=307)
+        ->  Seq Scan on profesor  (cost=0.00..8.00 rows=500 width=9) (actual time=0.007..0.031 rows=500 loops=1)
+  SubPlan 1
+    ->  Aggregate  (cost=10000000015.03..10000000015.04 rows=1 width=8) (actual time=0.077..0.077 rows=1 loops=155)
+          ->  Nested Loop  (cost=10000000000.00..10000000015.02 rows=1 width=4) (actual time=0.073..0.076 rows=0 loops=155)
+                Join Filter: (sede.id = profesor_sede.sede_id)
+                Rows Removed by Join Filter: 3
+                ->  Seq Scan on sede  (cost=0.00..1.75 rows=1 width=4) (actual time=0.002..0.013 rows=2 loops=155)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      Rows Removed by Filter: 18
+                ->  Seq Scan on profesor_sede  (cost=0.00..13.25 rows=2 width=4) (actual time=0.017..0.031 rows=1 loops=310)
+                      Filter: (profesor_dni = profesor.dni)
+                      Rows Removed by Filter: 714
+  SubPlan 2
+    ->  Aggregate  (cost=10000000026.26..10000000026.27 rows=1 width=4) (actual time=0.104..0.104 rows=1 loops=152)
+          ->  Nested Loop  (cost=10000000000.00..10000000026.26 rows=1 width=4) (actual time=0.025..0.102 rows=2 loops=152)
+                ->  Seq Scan on sede sede_1  (cost=0.00..1.75 rows=1 width=4) (actual time=0.002..0.012 rows=2 loops=152)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      Rows Removed by Filter: 18
+                ->  Seq Scan on colaborador c  (cost=0.00..24.50 rows=1 width=0) (actual time=0.023..0.044 rows=1 loops=304)
+                      Filter: (dni = colaborador.dni)
+                      Rows Removed by Filter: 999
+Planning Time: 0.562 ms
+JIT:
+  Functions: 45
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 2.267 ms, Inlining 39.979 ms, Optimization 214.747 ms, Emission 137.029 ms, Total 394.023 ms"
+Execution Time: 710.037 ms

@@ -1,0 +1,28 @@
+Limit  (cost=0.70..131.78 rows=1 width=600) (actual time=0.568..4.762 rows=10 loops=1)
+  ->  Nested Loop  (cost=0.70..131.78 rows=1 width=600) (actual time=0.567..4.759 rows=10 loops=1)
+        Join Filter: (director.dni = d_persona.dni)
+        ->  Nested Loop  (cost=0.41..130.80 rows=1 width=591) (actual time=0.551..4.695 rows=10 loops=1)
+              ->  Nested Loop  (cost=0.14..127.10 rows=1 width=572) (actual time=0.535..4.647 rows=10 loops=1)
+                    Join Filter: (director.sede_id = sede.id)
+                    Rows Removed by Join Filter: 94
+                    ->  Index Scan using idx_sede_construccion_fecha on sede  (cost=0.14..125.65 rows=1 width=540) (actual time=0.530..4.623 rows=10 loops=1)
+                          Index Cond: ((construccion_fecha >= '1990-01-01'::date) AND (construccion_fecha <= '2010-12-31'::date))
+                          Filter: (((SubPlan 1) + (SubPlan 2)) <= 400)
+                          Rows Removed by Filter: 2
+                          SubPlan 1
+                            ->  Aggregate  (cost=13.34..13.35 rows=1 width=8) (actual time=0.050..0.050 rows=1 loops=12)
+                                  ->  Seq Scan on profesor_sede  (cost=0.00..13.25 rows=37 width=0) (actual time=0.003..0.046 rows=38 loops=12)
+                                        Filter: (sede_id = sede.id)
+                                        Rows Removed by Filter: 702
+                          SubPlan 2
+                            ->  Aggregate  (cost=104.12..104.14 rows=1 width=8) (actual time=0.332..0.332 rows=1 loops=12)
+                                  ->  Seq Scan on alumno  (cost=0.00..103.50 rows=250 width=0) (actual time=0.003..0.320 rows=268 loops=12)
+                                        Filter: (salon_sede_id = sede.id)
+                                        Rows Removed by Filter: 4732
+                    ->  Seq Scan on director  (cost=0.00..1.20 rows=20 width=40) (actual time=0.001..0.001 rows=10 loops=10)
+              ->  Index Scan using colaborador_pkey on colaborador d_colaborador  (cost=0.28..3.69 rows=1 width=19) (actual time=0.004..0.004 rows=1 loops=10)
+                    Index Cond: (dni = director.dni)
+        ->  Index Scan using persona_pkey on persona d_persona  (cost=0.29..0.96 rows=1 width=59) (actual time=0.005..0.005 rows=1 loops=10)
+              Index Cond: (dni = d_colaborador.dni)
+Planning Time: 0.907 ms
+Execution Time: 4.811 ms

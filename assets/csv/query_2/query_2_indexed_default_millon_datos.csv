@@ -1,0 +1,52 @@
+Nested Loop Left Join  (cost=34801.63..6267861.62 rows=15941 width=85) (actual time=492.034..18938.484 rows=31546 loops=1)
+  ->  Hash Join  (cost=34801.34..3818041.25 rows=15941 width=94) (actual time=491.167..1931.962 rows=31546 loops=1)
+        Hash Cond: (colaborador.dni = persona.dni)
+        ->  Seq Scan on colaborador  (cost=0.00..3778803.67 rows=50000 width=42) (actual time=298.722..1618.964 rows=100000 loops=1)
+              Filter: (esta_activo AND (SubPlan 3))
+              SubPlan 3
+                ->  Nested Loop  (cost=0.42..112.47 rows=3 width=0) (actual time=0.013..0.013 rows=1 loops=100000)
+                      ->  Index Only Scan using colaborador_pkey on colaborador c_1  (cost=0.42..8.44 rows=1 width=0) (actual time=0.003..0.003 rows=1 loops=100000)
+                            Index Cond: (dni = colaborador.dni)
+                            Heap Fetches: 100000
+                      ->  Seq Scan on sede sede_2  (cost=0.00..104.00 rows=3 width=0) (actual time=0.010..0.010 rows=1 loops=100000)
+                            Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                            Rows Removed by Filter: 20
+        ->  Hash  (cost=27391.00..27391.00 rows=318827 width=61) (actual time=191.263..191.264 rows=317484 loops=1)
+              Buckets: 131072  Batches: 8  Memory Usage: 4638kB
+              ->  Seq Scan on persona  (cost=0.00..27391.00 rows=318827 width=61) (actual time=0.021..83.912 rows=317484 loops=1)
+                    Filter: ((nacimiento_fecha >= '1960-01-01'::date) AND (nacimiento_fecha <= '1980-12-31'::date))
+                    Rows Removed by Filter: 682516
+  ->  Index Only Scan using profesor_pkey on profesor  (cost=0.29..0.33 rows=1 width=9) (actual time=0.004..0.004 rows=0 loops=31546)
+        Index Cond: (dni = colaborador.dni)
+        Heap Fetches: 0
+  SubPlan 1
+    ->  Aggregate  (cost=40.81..40.82 rows=1 width=8) (actual time=0.007..0.007 rows=1 loops=15696)
+          ->  Nested Loop  (cost=4.73..40.81 rows=1 width=4) (actual time=0.006..0.006 rows=0 loops=15696)
+                ->  Bitmap Heap Scan on profesor_sede  (cost=4.44..15.77 rows=3 width=4) (actual time=0.004..0.005 rows=2 loops=15696)
+                      Recheck Cond: (profesor_dni = profesor.dni)
+                      Heap Blocks: exact=28450
+                      ->  Bitmap Index Scan on profesor_sede_pkey  (cost=0.00..4.44 rows=3 width=0) (actual time=0.003..0.003 rows=2 loops=15696)
+                            Index Cond: (profesor_dni = profesor.dni)
+                ->  Memoize  (cost=0.29..8.33 rows=1 width=4) (actual time=0.000..0.000 rows=0 loops=28497)
+                      Cache Key: profesor_sede.sede_id
+                      Cache Mode: logical
+                      Hits: 26497  Misses: 2000  Evictions: 0  Overflows: 0  Memory Usage: 139kB
+                      ->  Index Scan using sede_pkey on sede  (cost=0.28..8.32 rows=1 width=4) (actual time=0.002..0.002 rows=0 loops=2000)
+                            Index Cond: (id = profesor_sede.sede_id)
+                            Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                            Rows Removed by Filter: 1
+  SubPlan 2
+    ->  Aggregate  (cost=112.47..112.48 rows=1 width=4) (actual time=1.054..1.054 rows=1 loops=15850)
+          ->  Nested Loop  (cost=0.42..112.47 rows=3 width=4) (actual time=0.019..1.046 rows=162 loops=15850)
+                ->  Index Only Scan using colaborador_pkey on colaborador c  (cost=0.42..8.44 rows=1 width=0) (actual time=0.005..0.006 rows=1 loops=15850)
+                      Index Cond: (dni = colaborador.dni)
+                      Heap Fetches: 15850
+                ->  Seq Scan on sede sede_1  (cost=0.00..104.00 rows=3 width=4) (actual time=0.012..1.025 rows=162 loops=15850)
+                      Filter: (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) > '0'::numeric) AND (((EXTRACT(year FROM CURRENT_DATE) - EXTRACT(year FROM construccion_fecha)) % '10'::numeric) = '0'::numeric))
+                      Rows Removed by Filter: 1838
+Planning Time: 5.759 ms
+JIT:
+  Functions: 51
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 3.766 ms, Inlining 26.068 ms, Optimization 143.440 ms, Emission 129.215 ms, Total 302.488 ms"
+Execution Time: 18945.817 ms

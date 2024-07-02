@@ -1,0 +1,29 @@
+Limit  (cost=1.45..27.62 rows=1 width=600) (actual time=0.102..0.116 rows=1 loops=1)
+  ->  Nested Loop  (cost=1.45..27.62 rows=1 width=600) (actual time=0.101..0.115 rows=1 loops=1)
+        Join Filter: (director.dni = d_persona.dni)
+        ->  Nested Loop  (cost=1.17..26.55 rows=1 width=591) (actual time=0.092..0.106 rows=1 loops=1)
+              Join Filter: (director.sede_id = sede.id)
+              Rows Removed by Join Filter: 1
+              ->  Index Scan using idx_sede_construccion_fecha on sede  (cost=0.13..22.20 rows=1 width=540) (actual time=0.074..0.075 rows=1 loops=1)
+                    Index Cond: ((construccion_fecha >= '1990-01-01'::date) AND (construccion_fecha <= '2010-12-31'::date))
+                    Filter: (((SubPlan 1) + (SubPlan 2)) <= 400)
+                    SubPlan 1
+                      ->  Aggregate  (cost=2.15..2.16 rows=1 width=8) (actual time=0.014..0.014 rows=1 loops=1)
+                            ->  Seq Scan on profesor_sede  (cost=0.00..2.05 rows=42 width=0) (actual time=0.005..0.010 rows=39 loops=1)
+                                  Filter: (sede_id = sede.id)
+                                  Rows Removed by Filter: 45
+                    SubPlan 2
+                      ->  Aggregate  (cost=11.88..11.88 rows=1 width=8) (actual time=0.050..0.051 rows=1 loops=1)
+                            ->  Seq Scan on alumno  (cost=0.00..11.25 rows=250 width=0) (actual time=0.003..0.039 rows=305 loops=1)
+                                  Filter: (salon_sede_id = sede.id)
+                                  Rows Removed by Filter: 195
+              ->  Hash Join  (cost=1.04..4.32 rows=2 width=59) (actual time=0.017..0.029 rows=2 loops=1)
+                    Hash Cond: (d_colaborador.dni = director.dni)
+                    ->  Seq Scan on colaborador d_colaborador  (cost=0.00..3.00 rows=100 width=19) (actual time=0.002..0.007 rows=100 loops=1)
+                    ->  Hash  (cost=1.02..1.02 rows=2 width=40) (actual time=0.003..0.003 rows=2 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                          ->  Seq Scan on director  (cost=0.00..1.02 rows=2 width=40) (actual time=0.001..0.001 rows=2 loops=1)
+        ->  Index Scan using persona_pkey on persona d_persona  (cost=0.28..1.05 rows=1 width=59) (actual time=0.006..0.006 rows=1 loops=1)
+              Index Cond: (dni = d_colaborador.dni)
+Planning Time: 0.653 ms
+Execution Time: 0.159 ms

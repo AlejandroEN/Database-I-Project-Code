@@ -1,0 +1,33 @@
+Limit  (cost=1.12..717133.06 rows=20 width=131) (actual time=197.745..631.710 rows=20 loops=1)
+  ->  Nested Loop  (cost=1.12..13231085.43 rows=369 width=131) (actual time=21.928..455.874 rows=20 loops=1)
+        Join Filter: (director.dni = d_persona.dni)
+        ->  Nested Loop  (cost=0.70..13230674.09 rows=369 width=93) (actual time=21.888..455.528 rows=20 loops=1)
+              ->  Nested Loop  (cost=0.28..13229441.26 rows=369 width=74) (actual time=21.856..454.855 rows=20 loops=1)
+                    Join Filter: (director.sede_id = sede.id)
+                    Rows Removed by Join Filter: 20991
+                    ->  Index Scan using idx_sede_construccion_fecha on sede  (cost=0.28..13218335.26 rows=369 width=69) (actual time=21.581..453.049 rows=20 loops=1)
+                          Index Cond: ((construccion_fecha >= '1990-01-01'::date) AND (construccion_fecha <= '2010-12-31'::date))
+                          Filter: (((SubPlan 1) + (SubPlan 2)) <= 400)
+                          Rows Removed by Filter: 1
+                          SubPlan 1
+                            ->  Aggregate  (cost=1612.11..1612.12 rows=1 width=8) (actual time=3.195..3.195 rows=1 loops=21)
+                                  ->  Seq Scan on profesor_sede  (cost=0.00..1612.00 rows=45 width=0) (actual time=0.053..3.186 rows=45 loops=21)
+                                        Filter: (sede_id = sede.id)
+                                        Rows Removed by Filter: 89955
+                          SubPlan 2
+                            ->  Aggregate  (cost=10317.62..10317.64 rows=1 width=8) (actual time=18.364..18.364 rows=1 loops=21)
+                                  ->  Seq Scan on alumno  (cost=0.00..10317.00 rows=250 width=0) (actual time=0.075..18.335 rows=245 loops=21)
+                                        Filter: (salon_sede_id = sede.id)
+                                        Rows Removed by Filter: 499755
+                    ->  Materialize  (cost=0.00..41.00 rows=2000 width=13) (actual time=0.001..0.043 rows=1051 loops=20)
+                          ->  Seq Scan on director  (cost=0.00..31.00 rows=2000 width=13) (actual time=0.007..0.089 rows=1808 loops=1)
+              ->  Index Scan using colaborador_pkey on colaborador d_colaborador  (cost=0.42..3.34 rows=1 width=19) (actual time=0.028..0.028 rows=1 loops=20)
+                    Index Cond: (dni = director.dni)
+        ->  Index Scan using persona_pkey on persona d_persona  (cost=0.42..1.09 rows=1 width=61) (actual time=0.014..0.014 rows=1 loops=20)
+              Index Cond: (dni = d_colaborador.dni)
+Planning Time: 0.862 ms
+JIT:
+  Functions: 35
+"  Options: Inlining true, Optimization true, Expressions true, Deforming true"
+"  Timing: Generation 1.179 ms, Inlining 9.038 ms, Optimization 101.788 ms, Emission 65.037 ms, Total 177.041 ms"
+Execution Time: 633.012 ms
