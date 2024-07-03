@@ -1,14 +1,14 @@
 import random
 
-from ..utils.csv_writer import setup_csv_writer
-from ..utils.shared_faker import faker
+from scripts.utils import faker
+from scripts.utils import setup_csv_writer
 
 
 def generate_salon_data(
-        schema_size: int,
-        rows_amount: int,
-        grado_keys: tuple[int, ...],
-        sede_keys: tuple[int, ...],
+    schema_size: int,
+    rows_amount: int,
+    grado_keys: tuple[int, ...],
+    sede_keys: tuple[int, ...],
 ):
     salon_keys: set[tuple[str, int]] = set()
     file, writer = setup_csv_writer(f"salon_data_{schema_size}")

@@ -1,13 +1,13 @@
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
+from scripts.utils import setup_csv_writer
 
 
 def generate_tutor_data(
-        schema_size: int,
-        rows_amount: int,
-        colaborador_keys_iterator: Iterator[str],
-        salon_keys: tuple[tuple[str, int], ...],
+    schema_size: int,
+    rows_amount: int,
+    colaborador_keys_iterator: Iterator[str],
+    salon_keys: tuple[tuple[str, int], ...],
 ):
     tutor_keys: list[str] = []
     file, writer = setup_csv_writer(f"tutor_data_{schema_size}")

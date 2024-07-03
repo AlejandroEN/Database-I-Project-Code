@@ -1,14 +1,14 @@
 import random
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
+from scripts.utils import setup_csv_writer
 
 
 def generate_consejero_data(
-        schema_size: int,
-        rows_amount: int,
-        colaborador_keys_iterator: Iterator[str],
-        sede_keys: tuple[int, ...],
+    schema_size: int,
+    rows_amount: int,
+    colaborador_keys_iterator: Iterator[str],
+    sede_keys: tuple[int, ...],
 ):
     file, writer = setup_csv_writer(f"consejero_data_{schema_size}")
     consejero_keys: list[str] = []

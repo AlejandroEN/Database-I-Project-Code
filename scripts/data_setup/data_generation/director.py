@@ -1,13 +1,13 @@
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
+from scripts.utils import setup_csv_writer
 
 
 def generate_director_data(
-        schema_size: int,
-        rows_amount: int,
-        colaborator_keys_iterator: Iterator[str],
-        sede_keys: tuple[int, ...],
+    schema_size: int,
+    rows_amount: int,
+    colaborator_keys_iterator: Iterator[str],
+    sede_keys: tuple[int, ...],
 ):
     file, writer = setup_csv_writer(f"director_data_{schema_size}")
     director_keys: list[str] = []

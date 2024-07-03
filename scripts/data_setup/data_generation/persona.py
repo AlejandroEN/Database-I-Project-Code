@@ -1,7 +1,7 @@
 import random
 
-from ..utils.csv_writer import setup_csv_writer
-from ..utils.shared_faker import faker
+from scripts.utils import faker
+from scripts.utils import setup_csv_writer
 
 
 def generate_persona_data(schema_size: int, rows_amount: int):

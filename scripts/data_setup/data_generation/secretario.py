@@ -1,7 +1,7 @@
 import random
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
+from scripts.utils import setup_csv_writer
 
 
 def generate_secretario_data(
