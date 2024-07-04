@@ -1,23 +1,25 @@
 import time
 from random import randint
 
-from .data_generation.alumno import generate_alumno_data
-from .data_generation.apoderado import generate_apoderado_data
-from .data_generation.colaborador import generate_colaborador_data
-from .data_generation.consejero import generate_consejero_data
-from .data_generation.curso import generate_curso_data
-from .data_generation.director import generate_director_data
-from .data_generation.grado import generate_grado_data
-from .data_generation.institucion import generate_institucion_data
-from .data_generation.matricula import generate_matricula_data
-from .data_generation.persona import generate_persona_data
-from .data_generation.profesor import generate_profesor_data
-from .data_generation.profesor_curso_grado import generate_profesor_curso_grado_data
-from .data_generation.profesor_sede import generate_profesor_sede_data
-from .data_generation.salon import generate_salon_data
-from .data_generation.secretario import generate_secretario_data
-from .data_generation.sede import generate_sede_data
-from .data_generation.tutor import generate_tutor_data
+from scripts.data_setup.data_generation.alumno import generate_alumno_data
+from scripts.data_setup.data_generation.apoderado import generate_apoderado_data
+from scripts.data_setup.data_generation.colaborador import generate_colaborador_data
+from scripts.data_setup.data_generation.consejero import generate_consejero_data
+from scripts.data_setup.data_generation.curso import generate_curso_data
+from scripts.data_setup.data_generation.director import generate_director_data
+from scripts.data_setup.data_generation.grado import generate_grado_data
+from scripts.data_setup.data_generation.institucion import generate_institucion_data
+from scripts.data_setup.data_generation.matricula import generate_matricula_data
+from scripts.data_setup.data_generation.persona import generate_persona_data
+from scripts.data_setup.data_generation.profesor import generate_profesor_data
+from scripts.data_setup.data_generation.profesor_curso_grado import (
+    generate_profesor_curso_grado_data,
+)
+from scripts.data_setup.data_generation.profesor_sede import generate_profesor_sede_data
+from scripts.data_setup.data_generation.salon import generate_salon_data
+from scripts.data_setup.data_generation.secretario import generate_secretario_data
+from scripts.data_setup.data_generation.sede import generate_sede_data
+from scripts.data_setup.data_generation.tutor import generate_tutor_data
 
 
 def main() -> None:

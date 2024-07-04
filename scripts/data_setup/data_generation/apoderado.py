@@ -1,11 +1,11 @@
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
-from ..utils.shared_faker import faker
+from scripts.utils import faker
+from scripts.utils import setup_csv_writer
 
 
 def generate_apoderado_data(
-        schema_size: int, rows_amount: int, persona_keys_iterator: Iterator[str]
+    schema_size: int, rows_amount: int, persona_keys_iterator: Iterator[str]
 ):
     apoderado_keys: list[str] = []
     file, writer = setup_csv_writer(f"apoderado_data_{schema_size}")

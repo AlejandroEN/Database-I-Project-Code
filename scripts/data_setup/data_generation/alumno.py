@@ -1,15 +1,15 @@
 import random
 from typing import Iterator
 
-from ..utils.csv_writer import setup_csv_writer
+from scripts.utils.csv_writer import setup_csv_writer
 
 
 def generate_alumno_data(
-        schema_size: int,
-        rows_amount: int,
-        persona_keys_iterator: Iterator[str],
-        salon_keys: tuple[tuple[str, int], ...],
-        apoderado_keys: tuple[str, ...],
+    schema_size: int,
+    rows_amount: int,
+    persona_keys_iterator: Iterator[str],
+    salon_keys: tuple[tuple[str, int], ...],
+    apoderado_keys: tuple[str, ...],
 ):
     alumno_keys: list[str] = []
     file, writer = setup_csv_writer(f"alumno_data_{schema_size}")
