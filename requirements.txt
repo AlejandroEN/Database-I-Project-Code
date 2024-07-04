@@ -2,3 +2,5 @@ faker
 black
 graphviz
 psycopg
+pandas
+pillow
