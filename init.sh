@@ -24,3 +24,13 @@ for index in "${!schemas_names[@]}"; do
 		psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "\COPY $schema.$table FROM '/csv-files/$filename' DELIMITER ',' CSV HEADER;"
 	done
 done
+
+for index in "${!schemas_names[@]}"; do
+	schema="${schemas_names[index]}"
+
+	for file in "/sql-files/triggers"/*.sql; do
+		psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "SET search_path TO $schema;" -f "$file"
+	done
+
+	psql --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -c "SET search_path TO $schema;" -f "/sql-files/create_views.sql"
+done
