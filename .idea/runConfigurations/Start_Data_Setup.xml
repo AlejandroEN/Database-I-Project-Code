@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start Data Setup" type="PythonConfigurationType" factoryName="Python">
-    <module name="SQL" />
+    <module name="Database-I-Project-Code" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
