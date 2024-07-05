@@ -1,0 +1,22 @@
+{
+    "1k": {
+        "unindexed": 332.4116,
+        "indexed_default": 0.4278,
+        "indexed_custom": 0.2626
+    },
+    "10k": {
+        "unindexed": 693.5082,
+        "indexed_default": 17.214,
+        "indexed_custom": 14.5876
+    },
+    "100k": {
+        "unindexed": 47659.9506,
+        "indexed_default": 663.41,
+        "indexed_custom": 583.1402
+    },
+    "1m": {
+        "unindexed": 3802891.5532,
+        "indexed_default": 19606.6334,
+        "indexed_custom": 16868.9534
+    }
+}
